@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0A0A0C;
+            --surface-soft: #1D1D22;
+            --line: #2B2B31;
+            --text: #F1EFEE;
+            --text-muted: #97949C;
+            --accent: #E2323D;
+            --accent-hover: #C92834;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: var(--bg);
+        }
+
+        /* locked to the actual viewport height, instead of min-height,
+     so neither column can grow past the screen and distort */
+        .auth-wrap {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* LEFT: pure CSS, no image file — dark base with red glow accents */
+        .visual {
+            flex: 1;
+            height: 100%;
+            position: relative;
+            background:
+                radial-gradient(circle at 75% 20%, rgba(226, 50, 61, 0.35), transparent 45%),
+                radial-gradient(circle at 15% 85%, rgba(226, 50, 61, 0.18), transparent 50%),
+                linear-gradient(160deg, #0A0A0C 0%, #160A0C 55%, #0A0A0C 100%);
+        }
+
+        .visual-content {
+            position: absolute;
+            inset: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .brand-mark {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .visual-text h1 {
+            color: #fff;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .visual-text p {
+            color: #D8D5D8;
+            font-size: 14px;
+        }
+
+        /* RIGHT: the actual form — scrolls internally if content ever
+     gets taller than the screen, instead of pushing the page */
+        .form-side {
+            flex: 1;
+            height: 100%;
+            overflow-y: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+        }
+
+        .form-box {
+            width: 100%;
+            max-width: 360px;
+        }
+
+        .form-box h2 {
+            color: var(--text);
+            font-size: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .error-alert {
+            background: #2A1416;
+            border: 1px solid #4A1E22;
+            color: #FF8087;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .field-group {
+            margin-bottom: 18px;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .field-group input[type="text"],
+        .field-group input[type="password"] {
+            width: 100%;
+            background: var(--surface-soft);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 12px 14px;
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+            transition: border-color .15s;
+        }
+
+        .field-group input:focus {
+            border-color: var(--accent);
+        }
+
+        .password-wrap {
+            position: relative;
+        }
+
+        .password-wrap input {
+            padding-right: 42px;
+        }
+
+        .eye-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            display: flex;
+            padding: 4px;
+        }
+
+        .eye-btn:hover {
+            color: var(--text);
+        }
+
+        .eye-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .eye-btn .eye-off {
+            display: none;
+        }
+
+        .eye-btn.shown .eye-on {
+            display: none;
+        }
+
+        .eye-btn.shown .eye-off {
+            display: block;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px 0;
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14.5px;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: background .15s;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .switch-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .switch-text a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 760px) {
+            .visual {
+                display: none;
+            }
+
+            .auth-wrap {
+                height: auto;
+                min-height: 100vh;
+                overflow: visible;
+            }
+
+            .form-side {
+                height: auto;
+                overflow: visible;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="auth-wrap">
+
+        <div class="visual">
+            <div class="visual-content">
+                <span class="brand-mark">UP</span>
+                <div class="visual-text">
+                    <h1>Welcome back.</h1>
+                    <p>Log in to Access User Portal.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-side">
+            <div class="form-box">
+
+                <h2>Login</h2>
+
+                {% if form.errors %}
+                <div class="error-alert">Invalid username or password.</div>
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="field-group">
+                        <label>Username</label>
+                        {{ form.username }}
+                    </div>
+
+                    <div class="field-group">
+                        <label>Password</label>
+                        <div class="password-wrap">
+                            {{ form.password }}
+                            <button type="button" class="eye-btn" onclick="togglePassword()" aria-label="Show password">
+                                <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8">
+                                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.8">
+                                    <path
+                                        d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 5.1A10.6 10.6 0 0 1 12 5c7 0 11 7 11 7a13.2 13.2 0 0 1-3 3.4M6.1 6.6C3.6 8.3 1 12 1 12s4 7 11 7c1.2 0 2.3-.2 3.4-.5" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Login</button>
+                </form>
+
+                <p class="switch-text">
+                    Don't have an account? <a href="{% url 'register' %}">Register</a>
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function togglePassword() {
+            const pwd = document.getElementById('id_password');
+            const btn = document.querySelector('.eye-btn');
+            const showing = pwd.type === 'text';
+            pwd.type = showing ? 'password' : 'text';
+            btn.classList.toggle('shown', !showing);
+        }
+    </script>
+
+</body>
+
+</html>
