@@ -28,12 +28,24 @@
         <h1>Welcome, {{ user.username }}!</h1>
         <p class="page-sub">Here's what's happening across your account.</p>
 
+        <form method="GET" class="search-wrap">
+            <input
+                type="text"
+                name="search"
+                class="search-input"
+                placeholder="Search by username..."
+                value="{{ search }}"
+            >
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+
         <div class="stat-card" onclick="toggleTable()">
             <span class="stat-label">Total Users</span>
             <span class="stat-value">{{ users_count }}</span>
         </div>
 
-        <div id="usersTable" style="display:none;">
+        {% if users %}
+        <div id="usersTable" {% if search %}style="display:block;"{% else %}style="display:none;"{% endif %}>
             <table class="user-table">
                 <thead>
                     <tr>
@@ -53,6 +65,11 @@
                 </tbody>
             </table>
         </div>
+        {% elif search %}
+        <p class="no-results">
+            No users found for "<strong>{{ search }}</strong>".
+        </p>
+        {% endif %}
 
         {% else %}
 
