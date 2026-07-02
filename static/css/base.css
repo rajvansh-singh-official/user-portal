@@ -1,0 +1,20 @@
+:root {
+    --bg: #0A0A0C;
+    --surface-soft: #1D1D22;
+    --surface-head: #181A1F;
+    --line: #2B2B31;
+    --text: #F1EFEE;
+    --text-muted: #97949C;
+    --accent: #E2323D;
+    --accent-hover: #C92834;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', Arial, sans-serif;
+}

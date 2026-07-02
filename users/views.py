@@ -53,7 +53,7 @@ def users(request):
     
     users_count = User.objects.count()
 
-    return render(request, "users/users.html",
+    return render(request, "users.html",
         {
             "users": users,
             "users_count": users_count,

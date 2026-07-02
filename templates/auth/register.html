@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
+{% block body %}
+
+<div class="auth-wrap">
+
+    <div class="visual">
+        <div class="visual-content">
+            <span class="brand-mark">UP</span>
+            <div class="visual-text">
+                <h1>Create an account.</h1>
+                <p>Register and Access User Portal.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-side">
+        <div class="form-box">
+
+            <h2>Register</h2>
+
+            <form method="POST" id="registerForm">
+                {% csrf_token %}
+
+                <div class="field-group">
+                    <label>Username</label>
+                    {{ form.username }}
+                </div>
+
+                <div class="field-group">
+                    <label>Email</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="field-group">
+                    <label>Password</label>
+                    {{ form.password1 }}
+                </div>
+
+                <div class="field-group">
+                    <label>Confirm Password</label>
+                    {{ form.password2 }}
+                </div>
+
+                <p class="mismatch-msg" id="mismatchMsg">Passwords don't match.</p>
+
+                <button class="submit-btn" type="submit">
+                    Register
+                </button>
+
+                <p class="switch-text">
+                    Already have an account?
+                    <a href="{% url 'login' %}">Login</a>
+                </p>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/auth.js' %}"></script>
+{% endblock %}
