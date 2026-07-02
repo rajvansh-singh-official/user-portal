@@ -17,43 +17,9 @@ body {
     border-bottom: 1px solid var(--line);
 }
 
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.brand-mark {
-    width: 30px;
-    height: 30px;
-    border-radius: 8px;
-    background: var(--accent);
-    color: #fff;
-    font-weight: 700;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.brand-name {
+.topbar-title {
+    font-size: 15px;
     font-weight: 600;
-    font-size: 14.5px;
-    color: var(--text);
-}
-
-.logout-btn {
-    padding: 8px 16px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 13px;
-    transition: border-color .15s, color .15s;
-}
-
-.logout-btn:hover {
-    border-color: var(--accent);
     color: var(--text);
 }
 

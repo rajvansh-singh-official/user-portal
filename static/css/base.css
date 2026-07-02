@@ -16,5 +16,117 @@
 }
 
 body {
-    font-family: 'Inter', Arial, sans-serif;
+    font-family: "Inter", Arial, sans-serif;
+}
+
+/* ---------- Layout ---------- */
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+    width: 220px;
+    background: #111216;
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 18px;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.brand-mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: var(--accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.brand-name {
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* ---------- Navigation ---------- */
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+ 
+.nav-section-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--text-muted);
+    padding: 0 10px;
+    margin-bottom: 6px;
+    opacity: .6;
+}
+ 
+.nav-link {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 9px 10px;
+    border-radius: 7px;
+    transition: background .15s, color .15s;
+    display: block;
+}
+ 
+.nav-link:hover {
+    background: rgba(255, 255, 255, .05);
+    color: var(--text);
+}
+ 
+.nav-link.active {
+    background: rgba(226, 50, 61, .18);
+    color: var(--accent);
+}
+
+/* logout pinned to the bottom of sidebar */
+.sidebar-footer {
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+}
+ 
+.logout-link {
+    display: block;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 9px 10px;
+    border-radius: 7px;
+    transition: background .15s, color .15s;
+}
+ 
+.logout-link:hover {
+    background: rgba(226, 50, 61, .08);
+    color: var(--accent);
+}
+
+/* ---------- Main ---------- */
+
+.main-content {
+    flex: 1;
 }
