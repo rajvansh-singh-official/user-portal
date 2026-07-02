@@ -10,22 +10,15 @@ Users
 <link rel="stylesheet" href="{% static 'css/users.css' %}">
 {% endblock %}
 
-{% block body %}
+{% block sidebar %}
 
-<div class="topbar">
-    <div class="brand">
-        <span class="brand-mark">UP</span>
-        <span class="brand-name">User Portal</span>
-    </div>
+<!-- Sidebar coming next -->
 
-    {% if user.is_authenticated %}
-    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
-    {% endif %}
-</div>
+{% endblock %}
+
+{% block content %}
 
 <div class="page-wrap">
-
-    {% if user.is_authenticated %}
 
     <h1>Welcome, {{ user.username }}!</h1>
     <p class="page-sub">Here's what's happening across your account.</p>
@@ -70,18 +63,6 @@ Users
     <p class="no-results">
         No users found for "<strong>{{ search }}</strong>".
     </p>
-    {% endif %}
-
-    {% else %}
-
-    <h1>Welcome, Guest!</h1>
-    <p class="page-sub">Log in to your account or create a new one to get started.</p>
-
-    <div class="btn-row">
-        <a href="{% url 'login' %}" class="btn-primary-custom">Login</a>
-        <a href="{% url 'register' %}" class="btn-outline-custom">Register</a>
-    </div>
-
     {% endif %}
 
 </div>

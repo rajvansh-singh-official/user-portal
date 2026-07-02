@@ -10,7 +10,7 @@ Edit User
 <link rel="stylesheet" href="{% static 'css/auth.css' %}">
 {% endblock %}
 
-{% block body %}
+{% block content %}
 
 <div class="auth-wrap">
 
@@ -46,7 +46,7 @@ Edit User
             </form>
 
             <p class="switch-text">
-                <a href="/">Back to dashboard</a>
+                <a href="{% url 'users' %}">Back to users</a>
             </p>
 
         </div>
