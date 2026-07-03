@@ -40,6 +40,7 @@ Users
                     <th>ID</th>
                     <th>Username</th>
                     <th>Email</th>
+                    <th>Documents</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -49,8 +50,10 @@ Users
                     <td>{{ user.id }}</td>
                     <td>{{ user.username }}</td>
                     <td>{{ user.email }}</td>
+                    <td>{{ user.documents.count }} document{{ user.documents.count|pluralize }}</td>
                     <td>
                         <a href="{% url 'edit_user' user.id %}" class="edit-btn">Edit</a>
+                        <a href="{% url 'upload_document' user.id %}" class="upload-btn">Upload</a>
                     </td>
                 </tr>
                 {% endfor %}

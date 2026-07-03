@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import RegistrationForm, AuthenticationForm
+from .forms import RegistrationForm, AuthenticationForm, DocumentForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 
@@ -66,12 +66,43 @@ def edit_user(request, user_id):
     editing_user = get_object_or_404(User, id=user_id)
 
     if request.method == "POST":
+        
         editing_user.username = request.POST.get("username")
+        
         editing_user.email = request.POST.get("email")
+        
         editing_user.save()
+        
         return redirect("users")
 
     return render(request, "auth/edit_user.html",
     {
         "editing_user": editing_user 
+    })
+    
+def upload_document(request, user_id):
+    
+    uploading_user = get_object_or_404(User, id=user_id)
+    
+    if request.method == "POST":
+        
+        form = DocumentForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            
+            document = form.save(commit=False)
+            
+            document.user = uploading_user 
+            
+            document.save()
+            
+            return redirect("users")
+            
+    else:
+        form = DocumentForm()
+    
+    return render(request, "auth/upload_document.html",
+    {
+        "uploading_user": uploading_user,
+        "form": form,
     })

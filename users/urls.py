@@ -1,10 +1,11 @@
 from django.urls import path
-from .views import register, login_view, logout_view, users, edit_user
+from .views import register, login_view, logout_view, users, edit_user, upload_document
 
 urlpatterns = [
     path("register/", register, name="register"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
     path("users/", users, name="users"),
-    path("edit_user/<int:user_id>/", edit_user, name="edit_user")
+    path("edit_user/<int:user_id>/", edit_user, name="edit_user"),
+    path("users/<int:user_id>/upload/", upload_document, name="upload_document")
 ]

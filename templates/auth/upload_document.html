@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Upload Document
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="auth-wrap">
+
+    <div class="visual">
+        <div class="visual-content">
+            <span class="brand-mark">UP</span>
+
+            <div class="visual-text">
+                <h1>Upload document.</h1>
+                <p>Upload a document for {{ uploading_user.username }}.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-side">
+
+        <div class="form-box">
+
+            <h2>Upload Document</h2>
+
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="field-group">
+                    <label>Title</label>
+                    {{ form.title }}
+                </div>
+
+                <div class="field-group">
+                    <label>File</label>
+                    {{ form.file }}
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Upload
+                </button>
+
+            </form>
+
+            <p class="switch-text">
+                <a href="{% url 'users' %}">Back to Users</a>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/auth.js' %}"></script>
+{% endblock %}

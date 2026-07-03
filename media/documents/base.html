@@ -1,0 +1,89 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>
+        {% block title %}
+        User Portal
+        {% endblock %}
+    </title>
+
+    {% block css %}
+    {% endblock %}
+</head>
+
+<body>
+
+    {% if user.is_authenticated %}
+
+    <div class="layout">
+
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+                <span class="brand-mark">UP</span>
+                <span class="brand-name">User Portal</span>
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <span class="nav-section-label">Menu</span>
+
+                <a href="{% url 'dashboard' %}"
+                   class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                    Dashboard
+                </a>
+
+                <a href="{% url 'users' %}"
+                   class="nav-link {% if request.resolver_match.url_name == 'users' %}active{% endif %}">
+                    Users
+                </a>
+
+                <a href="#"
+                   class="nav-link {% if request.resolver_match.url_name == 'documents' %}active{% endif %}">
+                    Documents
+                </a>
+
+                <a href="#"
+                   class="nav-link {% if request.resolver_match.url_name == 'settings' %}active{% endif %}">
+                    Settings
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="{% url 'logout' %}" class="logout-link">Logout</a>
+            </div>
+
+        </aside>
+
+        <div class="main-content">
+
+            <div class="topbar">
+                <span class="topbar-title">{% block page_title %}{% endblock %}</span>
+            </div>
+
+            {% block content %}
+            {% endblock %}
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+    {% block guest_content %}
+    {% endblock %}
+
+    {% endif %}
+
+    {% block js %}
+    {% endblock %}
+
+</body>
+
+</html>
