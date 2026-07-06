@@ -52,8 +52,7 @@ Users
                     <td>{{ user.email }}</td>
                     <td>{{ user.documents.count }} document{{ user.documents.count|pluralize }}</td>
                     <td>
-                        <a href="{% url 'edit_user' user.id %}" class="edit-btn">Edit</a>
-                        <a href="{% url 'upload_document' user.id %}" class="upload-btn">Upload</a>
+                        <a href="{% url 'view_user' user.id %}" class="edit-btn">View</a>
                     </td>
                 </tr>
                 {% endfor %}

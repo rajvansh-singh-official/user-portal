@@ -61,48 +61,46 @@ def users(request):
         },       
     )
 
-def edit_user(request, user_id):
+def view_user(request, user_id):
     
-    editing_user = get_object_or_404(User, id=user_id)
+    user = get_object_or_404(User, id=user_id)
+    
+    documents = user.documents.all()
+    
+    document_form = DocumentForm()
 
     if request.method == "POST":
         
-        editing_user.username = request.POST.get("username")
+        if "save_profile" in request.POST:
         
-        editing_user.email = request.POST.get("email")
+            user.username = request.POST.get("username")
         
-        editing_user.save()
+            user.email = request.POST.get("email")
         
-        return redirect("users")
+            user.save()
+        
+            return redirect("view_user", user_id=user.id)
+        
+        elif "upload_document" in request.POST:
+            
+            document_form = DocumentForm(request.POST, request.FILES)
+            
+            if document_form.is_valid():
+                
+                document = document_form.save(commit=False)
 
-    return render(request, "auth/edit_user.html",
-    {
-        "editing_user": editing_user 
-    })
-    
-def upload_document(request, user_id):
-    
-    uploading_user = get_object_or_404(User, id=user_id)
-    
-    if request.method == "POST":
-        
-        form = DocumentForm(request.POST, request.FILES)
-        
-        if form.is_valid():
-            
-            document = form.save(commit=False)
-            
-            document.user = uploading_user 
-            
-            document.save()
-            
-            return redirect("users")
-            
-    else:
-        form = DocumentForm()
-    
-    return render(request, "auth/upload_document.html",
-    {
-        "uploading_user": uploading_user,
-        "form": form,
-    })
+                document.user = user
+
+                document.save()
+
+                return redirect("view_user", user_id=user.id)
+
+    return render(
+        request,
+        "auth/view_user.html",
+        {
+            "user": user,
+            "documents": documents,
+            "document_form": document_form, 
+        }
+    )

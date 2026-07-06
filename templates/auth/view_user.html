@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{ user.username }}
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/view_user.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="profile-hero">
+
+    <a href="{% url 'users' %}" class="back-link">
+        ← Back to Users
+    </a>
+
+    <div class="user-hero">
+
+        <div class="user-avatar">
+            {{ user.username|first|upper }}
+        </div>
+
+        <div class="user-hero-meta">
+            <h1>{{ user.username }}</h1>
+
+            <p>
+                {{ user.email }} • Member since {{ user.date_joined|date:"Y" }}
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="page-wrap">
+
+    <div class="profile-grid">
+
+        <!-- USER -->
+
+        <section class="card">
+
+            <div class="card-accent"></div>
+
+            <div class="card-header">
+                <h2>Profile</h2>
+                <p>Update account information.</p>
+            </div>
+
+            <div class="card-body">
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <div class="field-group">
+                        <label>Username</label>
+                        <input
+                            type="text"
+                            name="username"
+                            value="{{ user.username }}"
+                        >
+                    </div>
+
+                    <div class="field-group">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value="{{ user.email }}"
+                        >
+                    </div>
+
+                    <button
+                        type="submit"
+                        name="save_profile"
+                        class="submit-btn"
+                    >
+                        Save Changes
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- DOCUMENTS -->
+
+        <section class="card">
+
+            <div class="card-accent"></div>
+
+            <div class="card-header">
+                <h2>Documents</h2>
+                <p>{{ documents.count }} uploaded file{{ documents.count|pluralize }}</p>
+            </div>
+
+            <div class="card-body">
+
+                {% if documents %}
+
+                    <div class="document-list">
+
+                        {% for document in documents %}
+
+                            <div class="document-item">
+
+                                <span class="document-name">
+                                    {{ document.title }}
+                                </span>
+
+                                <span class="document-size">
+                                    {{ document.file.size|filesizeformat }}
+                                </span>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p class="no-documents">
+                        No documents uploaded yet.
+                    </p>
+
+                {% endif %}
+
+                <div class="divider">
+                    <span>Upload New</span>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+
+                    <div class="field-group">
+                        <label>Title</label>
+                        {{ document_form.title }}
+                    </div>
+
+                    <label class="upload-zone">
+
+                        {{ document_form.file }}
+
+                        <div class="upload-icon">
+                            ↑
+                        </div>
+
+                        <div class="upload-label">
+                            Click to upload
+                        </div>
+
+                        <div class="upload-hint">
+                            PDF, DOC, DOCX, PNG, JPG
+                        </div>
+
+                    </label>
+
+                    <button
+                        type="submit"
+                        name="upload_document"
+                        class="submit-btn upload-btn"
+                    >
+                        Upload
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock %}
