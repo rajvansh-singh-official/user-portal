@@ -1,3 +1,5 @@
+/* ===== LAYOUT ===== */
+
 html,
 body {
     height: 100%;
@@ -13,42 +15,44 @@ body {
     overflow: hidden;
 }
 
+/* ===== VISUAL PANEL ===== */
+
 .visual {
+    position: relative;
     flex: 1;
     height: 100%;
-    position: relative;
     background:
-        radial-gradient(circle at 75% 20%, rgba(226, 50, 61, 0.35), transparent 45%),
-        radial-gradient(circle at 15% 85%, rgba(226, 50, 61, 0.18), transparent 50%),
+        radial-gradient(circle at 75% 20%, rgba(226, 50, 61, .35), transparent 45%),
+        radial-gradient(circle at 15% 85%, rgba(226, 50, 61, .18), transparent 50%),
         linear-gradient(160deg, #0A0A0C 0%, #160A0C 55%, #0A0A0C 100%);
 }
 
 .visual-content {
     position: absolute;
     inset: 0;
-    padding: 40px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    padding: 40px;
 }
 
 .brand-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 34px;
     height: 34px;
     border-radius: 8px;
     background: var(--accent);
     color: #fff;
-    font-weight: 700;
     font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-weight: 700;
 }
 
 .visual-text h1 {
+    margin-bottom: 8px;
     color: #fff;
     font-size: 30px;
-    margin-bottom: 8px;
 }
 
 .visual-text p {
@@ -56,13 +60,15 @@ body {
     font-size: 14px;
 }
 
+/* ===== FORM ===== */
+
 .form-side {
-    flex: 1;
-    height: 100%;
-    overflow-y: auto;
     display: flex;
+    flex: 1;
     align-items: center;
     justify-content: center;
+    height: 100%;
+    overflow-y: auto;
     padding: 40px 24px;
 }
 
@@ -72,35 +78,33 @@ body {
 }
 
 .form-box h2 {
+    margin-bottom: 24px;
     color: var(--text);
     font-size: 24px;
-    margin-bottom: 24px;
     text-align: center;
 }
 
 .form-box form p,
-.form-box form>div {
+.form-box form > div {
     margin-bottom: 18px;
 }
 
 .form-box form label {
     display: block;
-    font-size: 13px;
-    color: var(--text-muted);
     margin-bottom: 6px;
+    color: var(--text-muted);
+    font-size: 13px;
 }
 
-.form-box form input[type="text"],
-.form-box form input[type="email"],
-.form-box form input[type="password"] {
+.form-box form input {
     width: 100%;
-    background: var(--surface-soft);
+    padding: 12px 14px;
     border: 1px solid var(--line);
     border-radius: 8px;
-    padding: 12px 14px;
+    outline: none;
+    background: var(--surface-soft);
     color: var(--text);
     font-size: 14px;
-    outline: none;
     transition: border-color .15s;
 }
 
@@ -108,29 +112,29 @@ body {
     border-color: var(--accent);
 }
 
-/* Django auto-adds this under every field (password rules, username
-     character limits, etc.) — hiding it since it was rendering as
-     invisible dark text and throwing off the spacing */
+/* ===== DJANGO HELPERS ===== */
 
 .form-box form .helptext {
     display: none;
 }
 
 .errorlist {
-    list-style: none;
     margin: 0 0 8px;
     padding: 0;
+    list-style: none;
 }
 
 .errorlist li {
-    background: #2A1416;
-    border: 1px solid #4A1E22;
-    color: #FF8087;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 12.5px;
     margin-bottom: 6px;
+    padding: 8px 12px;
+    border: 1px solid #4A1E22;
+    border-radius: 8px;
+    background: #2A1416;
+    color: #FF8087;
+    font-size: 12.5px;
 }
+
+/* ===== PASSWORD FIELD ===== */
 
 .password-wrap {
     position: relative;
@@ -142,15 +146,15 @@ body {
 
 .eye-btn {
     position: absolute;
-    right: 10px;
     top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--text-muted);
+    right: 10px;
     display: flex;
     padding: 4px;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    transform: translateY(-50%);
 }
 
 .eye-btn:hover {
@@ -162,10 +166,7 @@ body {
     height: 18px;
 }
 
-.eye-btn .eye-off {
-    display: none;
-}
-
+.eye-btn .eye-off,
 .eye-btn.shown .eye-on {
     display: none;
 }
@@ -175,23 +176,25 @@ body {
 }
 
 .mismatch-msg {
+    display: none;
+    margin: -8px 0 14px;
     color: #FF8087;
     font-size: 12.5px;
-    margin: -8px 0 14px;
-    display: none;
 }
+
+/* ===== BUTTON ===== */
 
 .submit-btn {
     width: 100%;
+    margin-top: 6px;
     padding: 12px 0;
-    background: var(--accent);
     border: none;
     border-radius: 8px;
+    background: var(--accent);
     color: #fff;
-    font-weight: 600;
     font-size: 14.5px;
+    font-weight: 600;
     cursor: pointer;
-    margin-top: 6px;
     transition: background .15s;
 }
 
@@ -199,20 +202,25 @@ body {
     background: var(--accent-hover);
 }
 
+/* ===== LINKS ===== */
+
 .switch-text {
-    text-align: center;
     margin-top: 20px;
-    font-size: 13px;
     color: var(--text-muted);
+    font-size: 13px;
+    text-align: center;
 }
 
 .switch-text a {
     color: var(--accent);
-    text-decoration: none;
     font-weight: 600;
+    text-decoration: none;
 }
 
+/* ===== RESPONSIVE ===== */
+
 @media (max-width: 760px) {
+
     .visual {
         display: none;
     }
@@ -227,4 +235,5 @@ body {
         height: auto;
         overflow: visible;
     }
+
 }
