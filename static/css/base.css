@@ -170,38 +170,45 @@ body {
     gap: 12px;
 }
 
-.btn-primary-custom,
-.btn-outline-custom {
+.btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     padding: 10px 20px;
+    border: 1px solid transparent;
     border-radius: 8px;
+    background: transparent;
+    color: var(--text);
     font-size: 14px;
     font-weight: 600;
     text-decoration: none;
+    cursor: pointer;
     transition: background .15s, border-color .15s, color .15s;
 }
 
-.btn-primary-custom {
-    border: 1px solid var(--accent);
+.btn-primary {
+    border-color: var(--accent);
     background: var(--accent);
     color: #fff;
 }
 
-.btn-primary-custom:hover {
+.btn-primary:hover {
     border-color: var(--accent-hover);
     background: var(--accent-hover);
 }
 
-.btn-outline-custom {
-    border: 1px solid var(--line);
-    background: transparent;
-    color: var(--text);
+.btn-secondary {
+    border-color: var(--line);
 }
 
-.btn-outline-custom:hover {
+.btn-secondary:hover {
     border-color: var(--accent);
     color: var(--accent);
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 13px;
 }
 
 /* ===== CARDS ===== */
