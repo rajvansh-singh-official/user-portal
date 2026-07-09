@@ -147,6 +147,6 @@ def interviews(request):
         "auth/interviews.html",
         {
             "interview_form": interview_form,
-            "interview_list": interview_list,
+            "interviews": interview_list,
         }
     )   

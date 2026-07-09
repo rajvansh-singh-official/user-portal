@@ -43,6 +43,11 @@
                     Users
                 </a>
 
+                <a href="{% url 'interviews' %}"
+                    class="nav-link {% if request.resolver_match.url_name == 'interviews' %}active{% endif %}">
+                    Interviews
+                </a>
+
                 <a href="#" class="nav-link">
                     Settings
                 </a>

@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Interviews
+{% endblock %}
+
+{% block page_title %}
+Interviews
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/interviews.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-wrap">
+
+    <h1>Interviews</h1>
+    <p class="page-sub">Manage and schedule candidate interviews.</p>
+
+    <div class="content-grid">
+
+        <!-- SCHEDULE FORM -->
+
+        <section class="card">
+
+            <div class="card-accent"></div>
+
+            <div class="card-header">
+                <h2>Schedule Interview</h2>
+                <p>Add a new interview to the schedule.</p>
+            </div>
+
+            <div class="card-body">
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <div class="field-group">
+                        <label>Candidate</label>
+                        {{ interview_form.user }}
+                    </div>
+
+                    <div class="field-group">
+                        <label>Date &amp; Time</label>
+                        {{ interview_form.scheduled_at }}
+                    </div>
+ 
+                    <div class="field-group">
+                        <label>Interviewer</label>
+                        {{ interview_form.interviewer }}
+                    </div>
+ 
+                    <div class="field-group">
+                        <label>Mode</label>
+                        {{ interview_form.mode }}
+                    </div>
+ 
+                    <div class="field-group">
+                        <label>Round</label>
+                        {{ interview_form.interview_round }}
+                    </div>
+ 
+                    <div class="field-group">
+                        <label>Notes</label>
+                        {{ interview_form.notes }}
+                    </div>
+ 
+                    <button type="submit" class="btn btn-primary submit-btn">
+                        Schedule
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- INTERVIEWS LIST -->
+
+        <section class="card">
+
+            <div class="card-accent"></div>
+
+            <div class="card-header">
+                <h2>All Interviews</h2>
+                <p>{{ interviews.count }} interview{{ interviews.count|pluralize }} on record.</p>
+            </div>
+
+            <div class="card-body">
+                
+                {% if interviews %}
+ 
+                <div class="iv-list">
+                    {% for interview in interviews %}
+                    <div class="iv-item">
+ 
+                        <div class="iv-info">
+                            <span class="iv-name">{{ interview.user.username }}</span>
+                            <span class="iv-meta">
+                                {{ interview.get_interview_round_display }} &middot;
+                                {{ interview.get_mode_display }} &middot;
+                                {{ interview.interviewer }}
+                            </span>
+                        </div>
+ 
+                        <div class="iv-right">
+                            <span class="badge badge-{{ interview.status }}">
+                                {{ interview.get_status_display }}
+                            </span>
+                            <span class="iv-date">
+                                {{ interview.scheduled_at|date:"d M, H:i" }}
+                            </span>
+                        </div>
+ 
+                    </div>
+                    {% endfor %}
+                </div>
+ 
+                {% else %}
+ 
+                <p class="no-interviews">No interviews scheduled yet.</p>
+ 
+                {% endif %}
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock %}
