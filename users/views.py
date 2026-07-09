@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import RegistrationForm, AuthenticationForm, DocumentForm
+from .forms import RegistrationForm, AuthenticationForm, DocumentForm, InterviewForm, InterviewScheduleForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
+from .models import Interview
 
 def register(request):
     
@@ -65,9 +66,13 @@ def view_user(request, user_id):
     
     user = get_object_or_404(User, id=user_id)
     
-    documents = user.documents.all()
+    document_list = user.documents.all()
+    
+    interview_list = user.interviews.all()
     
     document_form = DocumentForm()
+    
+    interview_form = InterviewForm()
 
     if request.method == "POST":
         
@@ -94,13 +99,54 @@ def view_user(request, user_id):
                 document.save()
 
                 return redirect("view_user", user_id=user.id)
+            
+        elif "schedule_interview" in request.POST:
+            
+            interview_form = InterviewForm(request.POST)
+            
+            if interview_form.is_valid():
+                
+                interview = interview_form.save(commit=False)
+                
+                interview.user = user
+                
+                interview.save()
+                
+                return redirect("view_user", user_id=user.id)
 
     return render(
         request,
         "auth/view_user.html",
         {
             "user": user,
-            "documents": documents,
-            "document_form": document_form, 
+            "document_list": document_list,
+            "interview_list": interview_list,
+            "document_form": document_form,
+            "interview_form": interview_form,
         }
     )
+    
+def interviews(request):
+    
+    interview_list = Interview.objects.all()
+
+    interview_form = InterviewScheduleForm()
+    
+    if request.method == "POST":
+        
+        interview_form  = InterviewScheduleForm(request.POST)
+        
+        if interview_form.is_valid():
+            
+            interview_form.save()
+
+            return redirect("interviews")
+        
+    return render(
+        request,
+        "auth/interviews.html",
+        {
+            "interview_form": interview_form,
+            "interview_list": interview_list,
+        }
+    )   

@@ -64,7 +64,8 @@ class Interview(models.Model):
 
     status = models.CharField(
         max_length=20,
-        choices=STATUS_CHOICES
+        choices=STATUS_CHOICES,
+        default="scheduled"
     )
 
     notes = models.TextField(blank=True)
