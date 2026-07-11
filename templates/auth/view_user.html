@@ -40,142 +40,209 @@
 
     <div class="profile-grid">
 
-        <!-- USER -->
+        <!-- LEFT COLUMN -->
 
-        <section class="card">
+        <div class="left-column">
 
-            <div class="card-accent"></div>
+            <!-- USER -->
 
-            <div class="card-header">
-                <h2>Profile</h2>
-                <p>Update account information.</p>
-            </div>
+            <section class="card">
 
-            <div class="card-body">
+                <div class="card-accent"></div>
 
-                <form method="POST">
+                <div class="card-header">
+                    <h2>Profile</h2>
+                    <p>Update account information.</p>
+                </div>
 
-                    {% csrf_token %}
+                <div class="card-body">
 
-                    <div class="field-group">
-                        <label>Username</label>
-                        <input
-                            type="text"
-                            name="username"
-                            value="{{ user.username }}"
-                        >
-                    </div>
+                    <form method="POST">
 
-                    <div class="field-group">
-                        <label>Email</label>
-                        <input
-                            type="email"
-                            name="email"
-                            value="{{ user.email }}"
-                        >
-                    </div>
+                        {% csrf_token %}
 
-                    <button
-                        type="submit"
-                        name="save_profile"
-                        class="btn btn-primary submit-btn"
-                    >
-                        Save Changes
-                    </button>
+                        <div class="field-group">
+                            <label>Username</label>
+                            <input type="text" name="username" value="{{ user.username }}">
+                        </div>
 
-                </form>
+                        <div class="field-group">
+                            <label>Email</label>
+                            <input type="email" name="email" value="{{ user.email }}">
+                        </div>
 
-            </div>
+                        <div class="btn-row">
+                            <button type="submit" name="save_profile" class="btn btn-primary submit-btn">
+                                Save Changes
+                            </button>
 
-        </section>
+                            <a href="{% url 'interviews' %}?user={{ user.id }}" class="btn btn-secondary submit-btn">
+                                Schedule Interview
+                            </a>
+                        </div>
 
-        <!-- DOCUMENTS -->
+                    </form>
 
-        <section class="card">
+                </div>
 
-            <div class="card-accent"></div>
+            </section>
 
-            <div class="card-header">
-                <h2>Documents</h2>
-                <p>{{ documents.count }} uploaded file{{ documents.count|pluralize }}</p>
-            </div>
+            <!-- INTERVIEW HISTORY -->
 
-            <div class="card-body">
+            <section class="card">
 
-                {% if documents %}
+                <div class="card-accent"></div>
 
-                    <div class="document-list">
+                <div class="card-header">
+                    <h2>Interview History</h2>
+                    <p>{{ interview_list.count }} interview{{ interview_list.count|pluralize }}</p>
+                </div>
 
-                        {% for document in documents %}
+                <div class="card-body">
 
-                            <div class="document-item">
+                    {% if interview_list %}
 
-                                <span class="document-name">
-                                    {{ document.title }}
+                    <div class="iv-list">
+
+                        {% for interview in interview_list %}
+
+                        <div class="iv-item">
+
+                            <div class="iv-info">
+
+                                <span class="iv-name">
+                                    {{ interview.get_interview_round_display }}
                                 </span>
 
-                                <span class="document-size">
-                                    {{ document.file.size|filesizeformat }}
+                                <span class="iv-meta">
+                                    {{ interview.get_mode_display }}
+                                    &middot;
+                                    {{ interview.interviewer }}
                                 </span>
 
                             </div>
+
+                            <div class="iv-right">
+
+                                <span class="badge badge-{{ interview.status }}">
+                                    {{ interview.get_status_display }}
+                                </span>
+
+                                <span class="iv-date">
+                                    {{ interview.scheduled_at|date:"d M Y, H:i" }}
+                                </span>
+
+                            </div>
+
+                        </div>
 
                         {% endfor %}
 
                     </div>
 
-                {% else %}
+                    {% else %}
+
+                    <p class="no-interviews">
+                        No interviews scheduled yet.
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+
+        <div class="right-column">
+
+            <!-- DOCUMENTS -->
+
+            <section class="card">
+
+                <div class="card-accent"></div>
+
+                <div class="card-header">
+                    <h2>Documents</h2>
+                    <p>{{ document_list.count }} uploaded file{{ document_list.count|pluralize }}</p>
+                </div>
+
+                <div class="card-body">
+
+                    {% if document_list %}
+
+                    <div class="document-list">
+
+                        {% for document in document_list %}
+
+                        <div class="document-item">
+
+                            <span class="document-name">
+                                {{ document.title }}
+                            </span>
+
+                            <span class="document-size">
+                                {{ document.file.size|filesizeformat }}
+                            </span>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% else %}
 
                     <p class="no-documents">
                         No documents uploaded yet.
                     </p>
 
-                {% endif %}
+                    {% endif %}
 
-                <div class="divider">
-                    <span>Upload New</span>
-                </div>
-
-                <form method="POST" enctype="multipart/form-data">
-
-                    {% csrf_token %}
-
-                    <div class="field-group">
-                        <label>Title</label>
-                        {{ document_form.title }}
+                    <div class="divider">
+                        <span>Upload New</span>
                     </div>
 
-                    <label class="upload-zone">
+                    <form method="POST" enctype="multipart/form-data">
 
-                        {{ document_form.file }}
+                        {% csrf_token %}
 
-                        <div class="upload-icon">
-                            ↑
+                        <div class="field-group">
+                            <label>Title</label>
+                            {{ document_form.title }}
                         </div>
 
-                        <div class="upload-label">
-                            Click to upload
-                        </div>
+                        <label class="upload-zone">
 
-                        <div class="upload-hint">
-                            PDF, DOC, DOCX, PNG, JPG
-                        </div>
+                            {{ document_form.file }}
 
-                    </label>
+                            <div class="upload-icon">
+                                ↑
+                            </div>
 
-                    <button
-                        type="submit"
-                        name="upload_document"
-                        class="btn btn-secondary submit-btn upload-btn"
-                    >
-                        Upload
-                    </button>
+                            <div class="upload-label">
+                                Click to upload
+                            </div>
 
-                </form>
+                            <div class="upload-hint">
+                                PDF, DOC, DOCX, PNG, JPG
+                            </div>
 
-            </div>
+                        </label>
 
-        </section>
+                        <button type="submit" name="upload_document" class="btn btn-primary submit-btn upload-btn">
+                            Upload
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+        </div>
 
     </div>
 

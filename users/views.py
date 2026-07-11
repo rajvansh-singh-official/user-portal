@@ -1,5 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import RegistrationForm, AuthenticationForm, DocumentForm, InterviewForm, InterviewScheduleForm
+from .forms import (
+    RegistrationForm,
+    AuthenticationForm,
+    DocumentForm,
+    InterviewScheduleForm
+)
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from .models import Interview
@@ -66,13 +71,11 @@ def view_user(request, user_id):
     
     user = get_object_or_404(User, id=user_id)
     
-    document_list = user.documents.all()
-    
-    interview_list = user.interviews.all()
-    
     document_form = DocumentForm()
     
-    interview_form = InterviewForm()
+    document_list = user.documents.all()
+    
+    interview_list = user.interviews.order_by("-scheduled_at")
 
     if request.method == "POST":
         
@@ -100,37 +103,22 @@ def view_user(request, user_id):
 
                 return redirect("view_user", user_id=user.id)
             
-        elif "schedule_interview" in request.POST:
-            
-            interview_form = InterviewForm(request.POST)
-            
-            if interview_form.is_valid():
-                
-                interview = interview_form.save(commit=False)
-                
-                interview.user = user
-                
-                interview.save()
-                
-                return redirect("view_user", user_id=user.id)
-
     return render(
         request,
         "auth/view_user.html",
         {
             "user": user,
+            "document_form": document_form,
             "document_list": document_list,
             "interview_list": interview_list,
-            "document_form": document_form,
-            "interview_form": interview_form,
         }
     )
     
 def interviews(request):
     
-    interview_list = Interview.objects.all()
-
-    interview_form = InterviewScheduleForm()
+    user_id = request.GET.get("user")
+    
+    interview_list = Interview.objects.order_by("scheduled_at")
     
     if request.method == "POST":
         
@@ -141,6 +129,24 @@ def interviews(request):
             interview_form.save()
 
             return redirect("interviews")
+        
+    else:
+        
+        initial = {}
+
+        if user_id:
+
+            try:
+
+                initial["user"] = User.objects.get(pk=user_id)
+
+            except User.DoesNotExist:
+
+                pass
+
+        interview_form = InterviewScheduleForm(
+            initial=initial
+        )
         
     return render(
         request,
