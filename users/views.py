@@ -59,7 +59,7 @@ def users(request):
     
     users_count = User.objects.count()
 
-    return render(request, "users.html",
+    return render(request, "users/users.html",
         {
             "users": users,
             "users_count": users_count,
@@ -105,7 +105,7 @@ def view_user(request, user_id):
             
     return render(
         request,
-        "auth/view_user.html",
+        "users/view_user.html",
         {
             "user": user,
             "document_form": document_form,
@@ -150,7 +150,7 @@ def interviews(request):
         
     return render(
         request,
-        "auth/interviews.html",
+        "interviews/interviews.html",
         {
             "interview_form": interview_form,
             "interviews": interview_list,

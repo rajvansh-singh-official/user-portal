@@ -7,7 +7,7 @@ def dashboard(request):
 
     return render(
         request, 
-        "dashboard.html",
+        "dashboard/dashboard.html",
         {
             "users_count": users_count,
         },       
