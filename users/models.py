@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# ===== DOCUMENTS =====
 
 class Document(models.Model):
 
@@ -20,6 +21,8 @@ class Document(models.Model):
 
     def __str__(self):
         return self.title
+    
+# ===== INTERVIEWS =====
     
 class Interview(models.Model):
 

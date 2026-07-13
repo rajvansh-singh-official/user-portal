@@ -1,13 +1,20 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login, logout
+from django.contrib.auth.models import User
+from django.shortcuts import (
+    render,
+    redirect,
+    get_object_or_404
+)
+
 from .forms import (
     RegistrationForm,
     AuthenticationForm,
     DocumentForm,
     InterviewScheduleForm
 )
-from django.contrib.auth import login, logout
-from django.contrib.auth.models import User
 from .models import Interview
+
+# ===== AUTHENTICATION =====
 
 def register(request):
     
@@ -48,6 +55,8 @@ def logout_view(request):
     logout(request)
     return redirect("login")
 
+# ===== DASHBOARD =====
+
 def dashboard(request):
 
     users_count = User.objects.count()
@@ -59,6 +68,8 @@ def dashboard(request):
             "users_count": users_count,
         },
     )
+
+# ===== USERS =====
 
 def users(request):
 
@@ -81,14 +92,13 @@ def users(request):
 
 def view_user(request, user_id):
     
-    user = get_object_or_404(User, id=user_id)
-    
-    document_form = DocumentForm()
+    user = get_object_or_404(User, pk=user_id)
     
     document_list = user.documents.all()
-    
     interview_list = user.interviews.order_by("-scheduled_at")
 
+    document_form = DocumentForm()
+    
     if request.method == "POST":
         
         if "save_profile" in request.POST:
@@ -101,7 +111,7 @@ def view_user(request, user_id):
         
             return redirect("view_user", user_id=user.id)
         
-        elif "upload_document" in request.POST:
+        if "upload_document" in request.POST:
             
             document_form = DocumentForm(request.POST, request.FILES)
             
@@ -125,6 +135,8 @@ def view_user(request, user_id):
             "interview_list": interview_list,
         }
     )
+    
+# ===== INTERVIEWS =====
     
 def interviews(request):
     

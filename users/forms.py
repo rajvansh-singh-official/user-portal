@@ -2,6 +2,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
 from .models import Document, Interview
 
+# ===== SHARED WIDGETS =====
+
 INTERVIEW_WIDGETS = {
     "scheduled_at": forms.DateTimeInput(
         attrs={
@@ -17,10 +19,14 @@ INTERVIEW_WIDGETS = {
     ),
 }
 
+# ===== AUTHENTICATION =====
+
 class RegistrationForm(UserCreationForm):
     
     email = forms.EmailField(required=True)
-    
+
+# ===== DOCUMENTS =====
+
 class DocumentForm(forms.ModelForm):
     
     class Meta:
@@ -32,21 +38,7 @@ class DocumentForm(forms.ModelForm):
             "file"
             ]
         
-class InterviewForm(forms.ModelForm):
-    
-    class Meta:
-        
-        model = Interview
-        
-        fields = [
-            "scheduled_at",
-            "interviewer",
-            "mode",
-            "interview_round",
-            "notes"
-            ]
-        
-        widgets = INTERVIEW_WIDGETS
+# ===== INTERVIEWS =====
         
 class InterviewScheduleForm(forms.ModelForm):
     

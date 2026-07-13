@@ -1,7 +1,26 @@
 from django.urls import path
-from .views import register, login_view, logout_view, dashboard, users, view_user, interviews
+from .views import (
+    register,
+    login_view,
+    logout_view,
+    dashboard,
+    users,
+    view_user,
+    interviews
+)
 
 urlpatterns = [
+    
+    # ===== DASHBOARD =====
+    
+    path(
+        "",
+        dashboard,
+        name="dashboard",
+    ),
+    
+    # ===== AUTHENTICATION =====
+    
     path(
         "register/",
         register,
@@ -20,11 +39,7 @@ urlpatterns = [
         name="logout"
     ),
     
-    path(
-        "/",
-        dashboard,
-        name="dashboard",
-    ),
+    # ===== USERS =====
     
     path(
         "users/",
@@ -37,6 +52,8 @@ urlpatterns = [
         view_user,
         name="view_user"
     ),
+    
+    # ===== INTERVIEWS =====
     
     path(
         "interviews/",
