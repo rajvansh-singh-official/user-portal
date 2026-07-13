@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
-from .models import Document, Interview
+from .models import Document, Interview, Question, Option
 
 # ===== SHARED WIDGETS =====
 
@@ -56,3 +56,30 @@ class InterviewScheduleForm(forms.ModelForm):
             ]
         
         widgets = INTERVIEW_WIDGETS  
+        
+# ===== QUESTIONS =====
+
+class QuestionsForm(forms.ModelForm):
+    
+    class Meta:
+        
+        model = Question
+        
+        fields = [
+            "question_text",
+            "question_type",
+            "difficulty",
+            "marks",
+            "is_active",
+        ]
+        
+class OptionForm(forms.ModelForm):
+    
+    class Meta:
+        
+        model = Option
+        
+        fields = [
+            "option_text",
+            "is_correct",
+        ]
