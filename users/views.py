@@ -48,6 +48,18 @@ def logout_view(request):
     logout(request)
     return redirect("login")
 
+def dashboard(request):
+
+    users_count = User.objects.count()
+
+    return render(
+        request,
+        "dashboard/dashboard.html",
+        {
+            "users_count": users_count,
+        },
+    )
+
 def users(request):
 
     search = request.GET.get("search", "")
