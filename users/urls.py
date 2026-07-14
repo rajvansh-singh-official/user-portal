@@ -6,7 +6,8 @@ from .views import (
     dashboard,
     users,
     view_user,
-    interviews
+    interviews,
+    questions,
 )
 
 urlpatterns = [
@@ -59,5 +60,14 @@ urlpatterns = [
         "interviews/",
         interviews,
         name="interviews"
-    )
+    ),
+
+    # ===== QUESTIONS =====
+    
+    path(
+        "questions/",
+        questions,
+        name="questions",
+    ),   
+
 ]

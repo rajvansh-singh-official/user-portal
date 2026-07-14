@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Questions
+{% endblock %}
+
+{% block page_title %}
+Questions
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/questions.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-wrap">
+
+    <h1>Questions</h1>
+    <p class="page-sub">Create Questions.</p>
+
+    <div class="content-grid">
+
+        <!-- QUESTION FORM -->
+
+        <section class="card">
+
+            <div class="card-accent"></div>
+
+            <div class="card-header">
+                <h2>Create Question</h2>
+                <p>Add a new question to the list.</p>
+            </div>
+
+            <div class="card-body">
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    {% if question_form.non_field_errors %}
+                    <div class="error-alert">
+                        {{ question_form.non_field_errors }}
+                    </div>
+                    {% endif %}
+
+                    <div class="field-group">
+                        <label>Question</label>
+                        {{ question_form.question_text }}
+                    </div>
+
+                    <div class="field-group">
+                        <label>Question Type</label>
+                        {{ question_form.question_type }}
+                    </div>
+
+                    <div class="field-group">
+                        <label>Difficulty</label>
+                        {{ question_form.difficulty }}
+                    </div>
+
+                    <div class="field-group">
+                        <label>Marks</label>
+                        {{ question_form.marks }}
+                    </div>
+
+                    {% if question_form.question_type.value != "short_answer" and question_form.question_type.value !=
+                    "long_answer" %}
+
+                    <div class="field-group">
+                        <label>Option 1</label>
+                        <input type="text" name="option_1">
+                    </div>
+
+                    <div class="field-group">
+                        <label>Option 2</label>
+                        <input type="text" name="option_2">
+                    </div>
+
+                    <div class="field-group">
+                        <label>Option 3</label>
+                        <input type="text" name="option_3">
+                    </div>
+
+                    <div class="field-group">
+                        <label>Option 4</label>
+                        <input type="text" name="option_4">
+                    </div>
+
+                    {% endif %}
+
+                    <div class="field-group">
+                        <label>Correct Option</label>
+
+                        {% if question_form.question_type.value == "true_false" %}
+
+                        <select name="correct_option">
+                            <option value="true">True</option>
+                            <option value="false">False</option>
+                        </select>
+
+                        {% else %}
+
+                        <select name="correct_option">
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                            <option value="4">Option 4</option>
+                        </select>
+
+                        {% endif %}
+
+                    </div>
+
+                    <div class="field-group checkbox-group">
+                        <label for="{{ question_form.is_active.id_for_label }}">
+                            Active
+                        </label>
+                        {{ question_form.is_active }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary submit-btn">
+                        Save
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- QUESTIONS LIST -->
+
+        <section class="card">
+
+            <div class="card-accent"></div>
+
+            <div class="card-header">
+                <h2>All Questions</h2>
+                <p>{{ questions.count }} question{{ questions.count|pluralize }} on list.</p>
+            </div>
+
+            <div class="card-body">
+
+                {% if questions %}
+
+                <div class="iv-list">
+                    {% for question in questions %}
+                    <div class="iv-item">
+
+                        <div class="iv-info">
+
+                            <span class="iv-name">
+                                {{ question.question_text|truncatechars:60 }}
+                            </span>
+
+                            <span class="iv-meta">
+                                {{ question.get_question_type_display }}
+                                &middot;
+                                {{ question.get_difficulty_display }}
+                                &middot;
+                                {{ question.marks }} mark{{ question.marks|pluralize }}
+                            </span>
+
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% else %}
+
+                <p class="no-questions">No questions on list.</p>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock %}

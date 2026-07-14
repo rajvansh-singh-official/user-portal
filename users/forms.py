@@ -59,7 +59,7 @@ class InterviewScheduleForm(forms.ModelForm):
         
 # ===== QUESTIONS =====
 
-class QuestionsForm(forms.ModelForm):
+class QuestionForm(forms.ModelForm):
     
     class Meta:
         

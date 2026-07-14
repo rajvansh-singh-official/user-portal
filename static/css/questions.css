@@ -1,0 +1,45 @@
+/* ===== PAGE ===== */
+
+.page-wrap {
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 24px 32px;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 20px;
+    align-items: start;
+}
+
+/* ===== CHECKBOX ===== */
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-group label {
+    margin: 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 860px) {
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-wrap {
+        padding: 20px;
+    }
+
+}
