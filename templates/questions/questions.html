@@ -66,51 +66,40 @@ Questions
                         {{ question_form.marks }}
                     </div>
 
-                    {% if question_form.question_type.value != "short_answer" and question_form.question_type.value !=
-                    "long_answer" %}
+                    <div id="option-fields">
 
-                    <div class="field-group">
-                        <label>Option 1</label>
-                        <input type="text" name="option_1">
+                        <div class="field-group">
+                            <label>Option 1</label>
+                            <input type="text" name="option_1">
+                        </div>
+
+                        <div class="field-group">
+                            <label>Option 2</label>
+                            <input type="text" name="option_2">
+                        </div>
+
+                        <div class="field-group">
+                            <label>Option 3</label>
+                            <input type="text" name="option_3">
+                        </div>
+
+                        <div class="field-group">
+                            <label>Option 4</label>
+                            <input type="text" name="option_4">
+                        </div>
+
                     </div>
 
-                    <div class="field-group">
-                        <label>Option 2</label>
-                        <input type="text" name="option_2">
-                    </div>
+                    <div id="correct-option-group" class="field-group">
 
-                    <div class="field-group">
-                        <label>Option 3</label>
-                        <input type="text" name="option_3">
-                    </div>
-
-                    <div class="field-group">
-                        <label>Option 4</label>
-                        <input type="text" name="option_4">
-                    </div>
-
-                    {% endif %}
-
-                    <div class="field-group">
                         <label>Correct Option</label>
 
-                        {% if question_form.question_type.value == "true_false" %}
-
-                        <select name="correct_option">
-                            <option value="true">True</option>
-                            <option value="false">False</option>
-                        </select>
-
-                        {% else %}
-
-                        <select name="correct_option">
+                        <select id="correct-option" name="correct_option">
                             <option value="1">Option 1</option>
                             <option value="2">Option 2</option>
                             <option value="3">Option 3</option>
                             <option value="4">Option 4</option>
                         </select>
-
-                        {% endif %}
 
                     </div>
 
@@ -184,4 +173,8 @@ Questions
 
 </div>
 
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/questions.js' %}"></script>
 {% endblock %}

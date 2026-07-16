@@ -73,6 +73,14 @@ class QuestionForm(forms.ModelForm):
             "is_active",
         ]
         
+        widgets = {
+            "question_type": forms.Select(
+                attrs={
+                    "id": "question-type"
+                }
+            ),
+        }
+        
 class OptionForm(forms.ModelForm):
     
     class Meta:
