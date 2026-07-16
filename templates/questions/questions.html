@@ -137,25 +137,54 @@ Questions
 
                 <div class="iv-list">
                     {% for question in questions %}
-                    <div class="iv-item">
 
-                        <div class="iv-info">
+                    <div class="q-item">
 
-                            <span class="iv-name">
-                                {{ question.question_text|truncatechars:60 }}
-                            </span>
+                        <div class="q-header">
 
-                            <span class="iv-meta">
-                                {{ question.get_question_type_display }}
-                                &middot;
-                                {{ question.get_difficulty_display }}
-                                &middot;
-                                {{ question.marks }} mark{{ question.marks|pluralize }}
-                            </span>
+                            <span class="q-arrow">▶</span>
+
+                            <div class="q-summary">
+                                <span class="q-name">{{ question.question_text|truncatechars:60 }}</span>
+                                <span class="q-meta">
+                                    {{ question.get_question_type_display }}
+                                    &middot;
+                                    {{ question.marks }} mark{{ question.marks|pluralize }}
+                                </span>
+                            </div>
+
+                            <div class="q-badges">
+                                <span class="badge badge-{{ question.difficulty }}">
+                                    {{ question.get_difficulty_display }}
+                                </span>
+                                {% if question.is_active %}
+                                <span class="badge badge-active">Active</span>
+                                {% else %}
+                                <span class="badge badge-inactive">Inactive</span>
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                        <div class="q-details">
+
+                            <p class="q-full-text">{{ question.question_text }}</p>
+
+                            {% if question.options.all %}
+                            <div class="option-list">
+                                {% for option in question.options.all %}
+                                <div class="option-item {% if option.is_correct %}correct{% endif %}">
+                                    <span class="opt-dot">{% if option.is_correct %}✓{% endif %}</span>
+                                    {{ option.option_text }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
 
                         </div>
 
                     </div>
+
                     {% endfor %}
                 </div>
 

@@ -30,6 +30,171 @@
     margin: 0;
 }
 
+/* ===== QUESTION ITEM ===== */
+
+.q-item {
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: #111216;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.q-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+}
+
+.q-arrow {
+    flex-shrink: 0;
+    color: var(--text-muted);
+    font-size: 9px;
+    transition: transform .2s ease;
+}
+
+.q-item.open .q-arrow {
+    transform: rotate(90deg);
+}
+
+.q-summary {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.q-name {
+    overflow: hidden;
+    color: var(--text);
+    font-size: 13.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.q-meta {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.q-badges {
+    display: flex;
+    flex-shrink: 0;
+    gap: 5px;
+}
+
+/* ===== EXPANDED DETAILS ===== */
+
+.q-details {
+    display: none;
+    padding: 14px;
+    border-top: 1px solid var(--line);
+    background: rgba(0, 0, 0, .2);
+}
+
+.q-item.open .q-details {
+    display: block;
+}
+
+.q-full-text {
+    margin-bottom: 12px;
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+/* ===== OPTIONS ===== */
+
+.option-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.option-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, .02);
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.option-item.correct {
+    border-color: rgba(74, 222, 128, .2);
+    background: rgba(74, 222, 128, .07);
+    color: var(--text);
+}
+
+.opt-dot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    font-size: 9px;
+}
+
+.option-item.correct .opt-dot {
+    border-color: #4ADE80;
+    background: rgba(74, 222, 128, .15);
+    color: #4ADE80;
+}
+
+/* ===== DIFFICULTY BADGES ===== */
+
+.badge {
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badge-easy {
+    background: rgba(74, 222, 128, .12);
+    color: #4ADE80;
+}
+
+.badge-medium {
+    background: rgba(251, 191, 36, .12);
+    color: #FBBF24;
+}
+
+.badge-hard {
+    background: rgba(226, 50, 61, .12);
+    color: var(--accent);
+}
+
+/* ===== STATUS BADGES ===== */
+
+.badge-active {
+    background: rgba(74, 222, 128, .12);
+    color: #4ADE80;
+}
+
+.badge-inactive {
+    background: rgba(255, 255, 255, .05);
+    color: var(--text-muted);
+}
+
+/* ===== EMPTY STATE ===== */
+
+.no-questions {
+    padding: 8px 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    text-align: center;
+}
+
 /* ===== RESPONSIVE ===== */
 
 @media (max-width: 860px) {
