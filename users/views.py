@@ -194,6 +194,13 @@ def questions(request):
     
     question_list = Question.objects.order_by("-created_at")
     
+    search = request.GET.get("search", "").strip()
+
+    if search:
+        question_list = question_list.filter(
+            question_text__icontains=search
+        )
+    
     if request.method == "POST":
 
         if "create_category" in request.POST:
@@ -283,5 +290,6 @@ def questions(request):
             "question_form": question_form,
             "category_form": category_form,
             "questions": question_list,
+            "search": search,
         }
     )

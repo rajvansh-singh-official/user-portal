@@ -156,6 +156,19 @@ Questions
 
             <div class="card-body">
 
+                <form method="GET" class="search-wrap">
+
+                    <input type="text" name="search" class="search-input" placeholder="Search questions..."
+                        value="{{ search }}">
+
+                    <button type="submit" class="btn btn-primary search-btn">
+
+                        Search
+
+                    </button>
+
+                </form>
+
                 {% if questions %}
 
                 <div class="iv-list">
@@ -240,9 +253,15 @@ Questions
 
                 {% else %}
 
+                {% if search %}
+                <p class="no-questions">
+                    No questions found for "<strong>{{ search }}</strong>".
+                </p>
+                {% else %}
                 <p class="no-questions">
                     No questions on list.
                 </p>
+                {% endif %}
 
                 {% endif %}
 
