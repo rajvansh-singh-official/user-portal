@@ -195,10 +195,29 @@ def questions(request):
     question_list = Question.objects.order_by("-created_at")
     
     search = request.GET.get("search", "").strip()
+    category = request.GET.get("category", "")
+    difficulty = request.GET.get("difficulty", "")
+    question_type = request.GET.get("type", "")
+    status = request.GET.get("status", "")
 
     if search:
         question_list = question_list.filter(
             question_text__icontains=search
+        )
+    
+    if category:
+        question_list = question_list.filter(
+            category_id=category
+        )
+        
+    if difficulty:
+        question_list = question_list.filter(
+            difficulty=difficulty
+        )
+
+    if question_type:
+        question_list = question_list.filter(
+            question_type=question_type
         )
     
     if request.method == "POST":
@@ -291,5 +310,10 @@ def questions(request):
             "category_form": category_form,
             "questions": question_list,
             "search": search,
+            "selected_category": category,
+            "selected_difficulty": difficulty,
+            "selected_type": question_type,
+            "selected_status": status,
+            "categories": Category.objects.filter(is_active=True).order_by("name"),
         }
     )

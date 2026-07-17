@@ -158,14 +158,41 @@ Questions
 
                 <form method="GET" class="search-wrap">
 
-                    <input type="text" name="search" class="search-input" placeholder="Search questions..."
-                        value="{{ search }}">
+                    <div class="search-row">
 
-                    <button type="submit" class="btn btn-primary search-btn">
+                        <input type="search" name="search" class="search-input" placeholder="Search questions..."
+                            value="{{ search }}">
 
-                        Search
+                    </div>
 
-                    </button>
+                    <div class="filter-row">
+
+                        <select name="category">
+                            <option value="">All Categories</option>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <select name="difficulty">
+                            <option value="">All Difficulty</option>
+                            {% for value, label in question_form.difficulty.field.choices %}
+                            <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <select name="type">
+                            <option value="">All Types</option>
+                            {% for value, label in question_form.question_type.field.choices %}
+                            <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <button type="submit" class="btn btn-primary search-btn">
+                            Search
+                        </button>
+
+                    </div>
 
                 </form>
 
