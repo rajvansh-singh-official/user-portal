@@ -19,11 +19,11 @@ Questions
 <div class="page-wrap">
 
     <h1>Questions</h1>
-    <p class="page-sub">Create Questions.</p>
+    <p class="page-sub">Create and manage interview questions.</p>
 
     <div class="content-grid">
 
-        <!-- QUESTION FORM -->
+        <!-- ===== QUESTION FORM ===== -->
 
         <section class="card">
 
@@ -54,6 +54,24 @@ Questions
                     <div class="field-group">
                         <label>Question Type</label>
                         {{ question_form.question_type }}
+                    </div>
+
+                    <div class="field-group">
+
+                        <label>Category</label>
+
+                        <div class="category-row">
+
+                            {{ question_form.category }}
+
+                            <button type="button" id="open-category-modal" class="icon-btn" title="Add Category">
+
+                                +
+
+                            </button>
+
+                        </div>
+
                     </div>
 
                     <div class="field-group">
@@ -104,14 +122,19 @@ Questions
                     </div>
 
                     <div class="field-group checkbox-group">
+
                         <label for="{{ question_form.is_active.id_for_label }}">
                             Active
                         </label>
+
                         {{ question_form.is_active }}
+
                     </div>
 
-                    <button type="submit" class="btn btn-primary submit-btn">
+                    <button type="submit" name="create_question" class="btn btn-primary submit-btn">
+
                         Save
+
                     </button>
 
                 </form>
@@ -120,7 +143,7 @@ Questions
 
         </section>
 
-        <!-- QUESTIONS LIST -->
+        <!-- ===== QUESTIONS LIST ===== -->
 
         <section class="card">
 
@@ -136,6 +159,7 @@ Questions
                 {% if questions %}
 
                 <div class="iv-list">
+
                     {% for question in questions %}
 
                     <div class="q-item">
@@ -145,40 +169,65 @@ Questions
                             <span class="q-arrow">▶</span>
 
                             <div class="q-summary">
-                                <span class="q-name">{{ question.question_text|truncatechars:60 }}</span>
+
+                                <span class="q-name">
+                                    {{ question.question_text|truncatechars:60 }}
+                                </span>
+
                                 <span class="q-meta">
                                     {{ question.get_question_type_display }}
                                     &middot;
                                     {{ question.marks }} mark{{ question.marks|pluralize }}
                                 </span>
+
                             </div>
 
                             <div class="q-badges">
+
+                                <span class="badge badge-category">
+                                    {{ question.category.name }}
+                                </span>
+
                                 <span class="badge badge-{{ question.difficulty }}">
                                     {{ question.get_difficulty_display }}
                                 </span>
+
                                 {% if question.is_active %}
                                 <span class="badge badge-active">Active</span>
                                 {% else %}
                                 <span class="badge badge-inactive">Inactive</span>
                                 {% endif %}
+
                             </div>
 
                         </div>
 
                         <div class="q-details">
 
-                            <p class="q-full-text">{{ question.question_text }}</p>
+                            <p class="q-full-text">
+                                {{ question.question_text }}
+                            </p>
 
                             {% if question.options.all %}
+
                             <div class="option-list">
+
                                 {% for option in question.options.all %}
+
                                 <div class="option-item {% if option.is_correct %}correct{% endif %}">
-                                    <span class="opt-dot">{% if option.is_correct %}✓{% endif %}</span>
+
+                                    <span class="opt-dot">
+                                        {% if option.is_correct %}✓{% endif %}
+                                    </span>
+
                                     {{ option.option_text }}
+
                                 </div>
+
                                 {% endfor %}
+
                             </div>
+
                             {% endif %}
 
                         </div>
@@ -186,17 +235,74 @@ Questions
                     </div>
 
                     {% endfor %}
+
                 </div>
 
                 {% else %}
 
-                <p class="no-questions">No questions on list.</p>
+                <p class="no-questions">
+                    No questions on list.
+                </p>
 
                 {% endif %}
 
             </div>
 
         </section>
+
+    </div>
+
+</div>
+
+<!-- ===== CATEGORY MODAL ===== -->
+
+<div id="category-modal" class="modal hidden">
+
+    {% if category_form.non_field_errors %}
+    <div class="error-alert">
+        {{ category_form.non_field_errors }}
+    </div>
+    {% endif %}
+
+    <div class="modal-content">
+
+        <div class="card-header">
+            <h2>Add Category</h2>
+            <p>Create a new question category.</p>
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="field-group">
+                <label>Name</label>
+                {{ category_form.name }}
+
+                {% if category_form.name.errors %}
+                <div class="field-error">
+                    {{ category_form.name.errors }}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="modal-actions">
+
+                <button type="button" id="close-category-modal" class="btn">
+
+                    Cancel
+
+                </button>
+
+                <button type="submit" name="create_category" class="btn btn-primary">
+
+                    Create
+
+                </button>
+
+            </div>
+
+        </form>
 
     </div>
 

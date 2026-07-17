@@ -1,110 +1,221 @@
+/* ==========================================================
+   QUESTION FORM
+========================================================== */
+
 const questionType = document.getElementById("question-type");
 const optionFields = document.getElementById("option-fields");
 const correctOptionGroup = document.getElementById("correct-option-group");
 const correctOption = document.getElementById("correct-option");
-const difficulty = document.getElementById("id_difficulty");
-const marks = document.getElementById("id_marks");
-const isActive = document.getElementById("id_is_active");
 
 function updateQuestionForm() {
 
     const type = questionType.value;
 
-    if (type === "mcq") {
+    switch (type) {
 
-        optionFields.style.display = "block";
-        correctOptionGroup.style.display = "block";
+        case "mcq":
 
-        correctOption.innerHTML = `
+            optionFields.style.display = "block";
+            correctOptionGroup.style.display = "block";
+
+            correctOption.innerHTML = `
                 <option value="1">Option 1</option>
                 <option value="2">Option 2</option>
                 <option value="3">Option 3</option>
                 <option value="4">Option 4</option>
             `;
 
-    }
+            break;
 
-    else if (type === "true_false") {
+        case "true_false":
 
-        optionFields.style.display = "none";
-        correctOptionGroup.style.display = "block";
+            optionFields.style.display = "none";
+            correctOptionGroup.style.display = "block";
 
-        correctOption.innerHTML = `
+            correctOption.innerHTML = `
                 <option value="true">True</option>
                 <option value="false">False</option>
             `;
 
+            break;
+
+        default:
+
+            optionFields.style.display = "none";
+            correctOptionGroup.style.display = "none";
+            correctOption.innerHTML = "";
+
     }
 
-    else {
+}
 
-        optionFields.style.display = "none";
-        correctOptionGroup.style.display = "none";
-        correctOption.innerHTML = "";
 
+/* ==========================================================
+   FORM PERSISTENCE
+========================================================== */
+
+const category = document.getElementById("id_category");
+const difficulty = document.getElementById("id_difficulty");
+const marks = document.getElementById("id_marks");
+const isActive = document.getElementById("id_is_active");
+
+function loadSavedFormData() {
+
+    const savedQuestionType = localStorage.getItem("questionType");
+    const savedCategory = localStorage.getItem("category");
+    const savedDifficulty = localStorage.getItem("difficulty");
+    const savedMarks = localStorage.getItem("marks");
+    const savedIsActive = localStorage.getItem("isActive");
+
+    if (savedQuestionType) {
+        questionType.value = savedQuestionType;
     }
 
-}
+    if (savedCategory) {
+        category.value = savedCategory;
+    }
 
-const savedQuestionType = localStorage.getItem("questionType");
-const savedDifficulty = localStorage.getItem("difficulty");
-const savedMarks = localStorage.getItem("marks");
-const savedIsActive = localStorage.getItem("isActive");
+    if (savedDifficulty) {
+        difficulty.value = savedDifficulty;
+    }
 
-if (savedQuestionType) {
-    questionType.value = savedQuestionType;
-}
+    if (savedMarks) {
+        marks.value = savedMarks;
+    }
 
-if (savedDifficulty) {
-    difficulty.value = savedDifficulty;
-}
+    if (savedIsActive !== null) {
+        isActive.checked = savedIsActive === "true";
+    }
 
-if (savedMarks) {
-    marks.value = savedMarks;
-}
-
-if (savedIsActive !== null) {
-    isActive.checked = savedIsActive === "true";
-}
-
-updateQuestionForm();
-
-questionType.addEventListener("change", () => {
-    localStorage.setItem("questionType", questionType.value);
     updateQuestionForm();
-});
 
-difficulty.addEventListener("change", () => {
-    localStorage.setItem("difficulty", difficulty.value);
-});
+}
 
-marks.addEventListener("input", () => {
-    localStorage.setItem("marks", marks.value);
-});
+function registerFormEvents() {
 
-isActive.addEventListener("change", () => {
-    localStorage.setItem("isActive", isActive.checked);
-});
+    questionType.addEventListener("change", () => {
 
-const questionItems = document.querySelectorAll(".q-item");
-const questionHeaders = document.querySelectorAll(".q-header");
-
-questionHeaders.forEach((header) => {
-
-    header.addEventListener("click", () => {
-
-        const item = header.closest(".q-item");
-
-        questionItems.forEach((other) => {
-
-            if (other !== item) {
-                other.classList.remove("open");
-            }
-
-        });
-
-        item.classList.toggle("open");
+        localStorage.setItem("questionType", questionType.value);
+        updateQuestionForm();
 
     });
 
-});
+    category.addEventListener("change", () => {
+
+        localStorage.setItem("category", category.value);
+
+    });
+
+    difficulty.addEventListener("change", () => {
+
+        localStorage.setItem("difficulty", difficulty.value);
+
+    });
+
+    marks.addEventListener("input", () => {
+
+        localStorage.setItem("marks", marks.value);
+
+    });
+
+    isActive.addEventListener("change", () => {
+
+        localStorage.setItem("isActive", isActive.checked);
+
+    });
+
+}
+
+
+/* ==========================================================
+   QUESTION ACCORDION
+========================================================== */
+
+function initializeAccordion() {
+
+    const questionItems = document.querySelectorAll(".q-item");
+    const questionHeaders = document.querySelectorAll(".q-header");
+
+    questionHeaders.forEach((header) => {
+
+        header.addEventListener("click", () => {
+
+            const item = header.closest(".q-item");
+
+            questionItems.forEach((other) => {
+
+                if (other !== item) {
+                    other.classList.remove("open");
+                }
+
+            });
+
+            item.classList.toggle("open");
+
+        });
+
+    });
+
+}
+
+
+/* ==========================================================
+   CATEGORY MODAL
+========================================================== */
+
+const categoryModal = document.getElementById("category-modal");
+const openCategoryModal = document.getElementById("open-category-modal");
+const closeCategoryModal = document.getElementById("close-category-modal");
+
+function initializeCategoryModal() {
+
+    openCategoryModal.addEventListener("click", () => {
+
+        categoryModal.classList.remove("hidden");
+
+    });
+
+    closeCategoryModal.addEventListener("click", () => {
+
+        categoryModal.classList.add("hidden");
+
+    });
+
+    categoryModal.addEventListener("click", (event) => {
+
+        if (event.target === categoryModal) {
+
+            categoryModal.classList.add("hidden");
+
+        }
+
+    });
+
+    document.addEventListener("keydown", (event) => {
+
+        if (event.key === "Escape") {
+
+            categoryModal.classList.add("hidden");
+
+        }
+
+    });
+
+}
+
+
+/* ==========================================================
+   INITIALIZE
+========================================================== */
+
+if (
+    document.querySelector(".field-error") ||
+    document.querySelector("#category-modal .error-alert")
+) {
+    categoryModal.classList.remove("hidden");
+}
+
+loadSavedFormData();
+registerFormEvents();
+initializeAccordion();
+initializeCategoryModal();

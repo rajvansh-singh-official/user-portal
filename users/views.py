@@ -12,8 +12,14 @@ from .forms import (
     DocumentForm,
     InterviewScheduleForm,
     QuestionForm,
+    CategoryForm,
 )
-from .models import Interview, Question, Option
+from .models import (
+    Interview,
+    Question,
+    Option,
+    Category,
+)
 
 # ===== AUTHENTICATION =====
 
@@ -189,79 +195,93 @@ def questions(request):
     question_list = Question.objects.order_by("-created_at")
     
     if request.method == "POST":
+
+        if "create_category" in request.POST:
+
+            category_form = CategoryForm(request.POST)
+
+            if category_form.is_valid():
+                category_form.save()
+                return redirect("questions")
+
+            question_form = QuestionForm()
+
+        elif "create_question" in request.POST:
+
+            question_form = QuestionForm(request.POST)
         
-        question_form = QuestionForm(request.POST)
-        
-        if question_form.is_valid():
+            if question_form.is_valid():
 
-            question = question_form.save(commit=False)
+                question = question_form.save(commit=False)
 
-            if question.question_type == "mcq":
+                if question.question_type == "mcq":
 
-                options = [
-                    request.POST.get("option_1"),
-                    request.POST.get("option_2"),
-                    request.POST.get("option_3"),
-                    request.POST.get("option_4"),
-                ]
+                    options = [
+                        request.POST.get("option_1"),
+                        request.POST.get("option_2"),
+                        request.POST.get("option_3"),
+                        request.POST.get("option_4"),
+                    ]
 
-                if not all(options):
-                    question_form.add_error(
-                        None,
-                        "All four options are required for MCQ."
+                    if not all(options):
+                        question_form.add_error(
+                            None,
+                            "All four options are required for MCQ."
+                        )
+
+                    else:
+
+                        question.save()
+
+                        correct_option = int(request.POST.get("correct_option"))
+
+                        for i, option_text in enumerate(options, start=1):
+
+                            Option.objects.create(
+                                question=question,
+                                option_text=option_text,
+                                is_correct=(i == correct_option),
+                            )
+
+                        return redirect("questions")
+
+                elif question.question_type == "true_false":
+
+                    question.save()
+
+                    correct_option = request.POST.get("correct_option")
+
+                    Option.objects.create(
+                        question=question,
+                        option_text="True",
+                        is_correct=(correct_option == "true"),
                     )
 
+                    Option.objects.create(
+                        question=question,
+                        option_text="False",
+                        is_correct=(correct_option == "false"),
+                    )
+
+                    return redirect("questions")
+        
                 else:
 
                     question.save()
 
-                    correct_option = int(request.POST.get("correct_option"))
-
-                    for i, option_text in enumerate(options, start=1):
-
-                        Option.objects.create(
-                            question=question,
-                            option_text=option_text,
-                            is_correct=(i == correct_option),
-                        )
-
                     return redirect("questions")
-
-            elif question.question_type == "true_false":
-
-                question.save()
-
-                correct_option = request.POST.get("correct_option")
-
-                Option.objects.create(
-                    question=question,
-                    option_text="True",
-                    is_correct=(correct_option == "true"),
-                )
-
-                Option.objects.create(
-                    question=question,
-                    option_text="False",
-                    is_correct=(correct_option == "false"),
-                )
-
-                return redirect("questions")
-        
-            else:
-
-                question.save()
-
-                return redirect("questions")
             
     else:
         
         question_form = QuestionForm()
+        category_form = CategoryForm()
         
     return render(
         request,
         "questions/questions.html",
         {
             "question_form": question_form,
+            "category_form": category_form,
             "questions": question_list,
         }
     )

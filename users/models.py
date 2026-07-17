@@ -82,6 +82,22 @@ class Interview(models.Model):
     
 # ===== QUESTIONS =====
 
+class Category(models.Model):
+    
+    name = models.CharField(
+        max_length=100,
+        unique=True,
+    )
+    
+    is_active = models.BooleanField(default=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.name
+
 class Question(models.Model):
     
     QUESTION_TYPE_CHOICES = [
@@ -103,6 +119,12 @@ class Question(models.Model):
         max_length=20,
         choices=QUESTION_TYPE_CHOICES,
         default="mcq"
+    )
+    
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.PROTECT,
+        related_name="questions",
     )
     
     difficulty = models.CharField(

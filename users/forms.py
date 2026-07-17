@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
-from .models import Document, Interview, Question, Option
+from .models import Document, Interview, Question, Option, Category
 
 # ===== SHARED WIDGETS =====
 
@@ -68,6 +68,7 @@ class QuestionForm(forms.ModelForm):
         fields = [
             "question_text",
             "question_type",
+            "category",
             "difficulty",
             "marks",
             "is_active",
@@ -91,3 +92,20 @@ class OptionForm(forms.ModelForm):
             "option_text",
             "is_correct",
         ]
+        
+class CategoryForm(forms.ModelForm):
+
+    class Meta:
+        model = Category
+        fields = ["name"]
+
+    def clean_name(self):
+
+        name = self.cleaned_data["name"].strip()
+
+        if Category.objects.filter(name__iexact=name).exists():
+            raise forms.ValidationError(
+                "Category already exists."
+            )
+
+        return name.title()
