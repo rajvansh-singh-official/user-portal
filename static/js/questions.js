@@ -94,34 +94,24 @@ function loadSavedFormData() {
 function registerFormEvents() {
 
     questionType.addEventListener("change", () => {
-
         localStorage.setItem("questionType", questionType.value);
         updateQuestionForm();
-
     });
 
     category.addEventListener("change", () => {
-
         localStorage.setItem("category", category.value);
-
     });
 
     difficulty.addEventListener("change", () => {
-
         localStorage.setItem("difficulty", difficulty.value);
-
     });
 
     marks.addEventListener("input", () => {
-
         localStorage.setItem("marks", marks.value);
-
     });
 
     isActive.addEventListener("change", () => {
-
         localStorage.setItem("isActive", isActive.checked);
-
     });
 
 }
@@ -143,11 +133,9 @@ function initializeAccordion() {
             const item = header.closest(".q-item");
 
             questionItems.forEach((other) => {
-
                 if (other !== item) {
                     other.classList.remove("open");
                 }
-
             });
 
             item.classList.toggle("open");
@@ -155,6 +143,22 @@ function initializeAccordion() {
         });
 
     });
+
+}
+
+
+/* ==========================================================
+   FILTER CHIP REMOVAL
+========================================================== */
+
+function removeFilter(key) {
+
+    const params = new URLSearchParams(window.location.search);
+    params.delete(key);
+
+    // rebuild URL — if no params left go to base URL
+    const newQuery = params.toString();
+    window.location.search = newQuery;
 
 }
 
@@ -170,35 +174,23 @@ const closeCategoryModal = document.getElementById("close-category-modal");
 function initializeCategoryModal() {
 
     openCategoryModal.addEventListener("click", () => {
-
         categoryModal.classList.remove("hidden");
-
     });
 
     closeCategoryModal.addEventListener("click", () => {
-
         categoryModal.classList.add("hidden");
-
     });
 
     categoryModal.addEventListener("click", (event) => {
-
         if (event.target === categoryModal) {
-
             categoryModal.classList.add("hidden");
-
         }
-
     });
 
     document.addEventListener("keydown", (event) => {
-
         if (event.key === "Escape") {
-
             categoryModal.classList.add("hidden");
-
         }
-
     });
 
 }

@@ -65,9 +65,7 @@ Questions
                             {{ question_form.category }}
 
                             <button type="button" id="open-category-modal" class="icon-btn" title="Add Category">
-
                                 +
-
                             </button>
 
                         </div>
@@ -122,19 +120,14 @@ Questions
                     </div>
 
                     <div class="field-group checkbox-group">
-
                         <label for="{{ question_form.is_active.id_for_label }}">
                             Active
                         </label>
-
                         {{ question_form.is_active }}
-
                     </div>
 
                     <button type="submit" name="create_question" class="btn btn-primary submit-btn">
-
                         Save
-
                     </button>
 
                 </form>
@@ -151,51 +144,115 @@ Questions
 
             <div class="card-header">
                 <h2>All Questions</h2>
+                {% if search or selected_category or selected_difficulty or selected_type or selected_status %}
+                <p>{{ questions.count }} question{{ questions.count|pluralize }} &mdash; filtered</p>
+                {% else %}
                 <p>{{ questions.count }} question{{ questions.count|pluralize }} on list.</p>
+                {% endif %}
             </div>
 
             <div class="card-body">
 
-                <form method="GET" class="search-wrap">
+                <form method="GET">
 
+                    <!-- ROW 1: search + submit inline -->
                     <div class="search-row">
-
-                        <input type="search" name="search" class="search-input" placeholder="Search questions..."
-                            value="{{ search }}">
-
+                        <input
+                            type="search"
+                            name="search"
+                            class="search-input"
+                            placeholder="Search questions..."
+                            value="{{ search }}"
+                        >
+                        <button type="submit" class="btn btn-primary search-btn">Search</button>
                     </div>
 
-                    <div class="filter-row">
+                    <!-- ROW 2: all four filter selects -->
+                    <div class="filter-selects">
 
                         <select name="category">
                             <option value="">All Categories</option>
-                            {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat.id }}" {% if cat.id|stringformat:"s" == selected_category %}selected{% endif %}>
+                                {{ cat.name }}
+                            </option>
                             {% endfor %}
                         </select>
 
                         <select name="difficulty">
                             <option value="">All Difficulty</option>
                             {% for value, label in question_form.difficulty.field.choices %}
-                            <option value="{{ value }}">{{ label }}</option>
+                            {% if value %}
+                            <option value="{{ value }}" {% if value == selected_difficulty %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                            {% endif %}
                             {% endfor %}
                         </select>
 
                         <select name="type">
                             <option value="">All Types</option>
                             {% for value, label in question_form.question_type.field.choices %}
-                            <option value="{{ value }}">{{ label }}</option>
+                            {% if value %}
+                            <option value="{{ value }}" {% if value == selected_type %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                            {% endif %}
                             {% endfor %}
                         </select>
 
-                        <button type="submit" class="btn btn-primary search-btn">
-                            Search
-                        </button>
+                        <select name="status">
+                            <option value="">All Status</option>
+                            <option value="active" {% if selected_status == "active" %}selected{% endif %}>Active</option>
+                            <option value="inactive" {% if selected_status == "inactive" %}selected{% endif %}>Inactive</option>
+                        </select>
 
                     </div>
 
                 </form>
 
+                <!-- ROW 3: active filter chips — only shown when at least one filter is applied -->
+                {% if search or selected_category or selected_difficulty or selected_type or selected_status %}
+                <div class="filter-chips">
+
+                    <span class="chips-label">Filtering by:</span>
+
+                    {% if search %}
+                    <span class="filter-chip" onclick="removeFilter('search')">
+                        &ldquo;{{ search }}&rdquo; <span class="chip-x">✕</span>
+                    </span>
+                    {% endif %}
+
+                    {% if selected_category %}
+                    <span class="filter-chip" onclick="removeFilter('category')">
+                        {{ selected_category_name }} <span class="chip-x">✕</span>
+                    </span>
+                    {% endif %}
+
+                    {% if selected_difficulty %}
+                    <span class="filter-chip" onclick="removeFilter('difficulty')">
+                        {{ selected_difficulty_label }} <span class="chip-x">✕</span>
+                    </span>
+                    {% endif %}
+
+                    {% if selected_type %}
+                    <span class="filter-chip" onclick="removeFilter('type')">
+                        {{ selected_type_label }} <span class="chip-x">✕</span>
+                    </span>
+                    {% endif %}
+
+                    {% if selected_status %}
+                    <span class="filter-chip" onclick="removeFilter('status')">
+                        {{ selected_status_label }} <span class="chip-x">✕</span>
+                    </span>
+                    {% endif %}
+
+                    <a href="{% url 'questions' %}" class="clear-all">Clear all</a>
+
+                </div>
+                {% endif %}
+
+                <!-- question list -->
                 {% if questions %}
 
                 <div class="iv-list">
@@ -209,65 +266,39 @@ Questions
                             <span class="q-arrow">▶</span>
 
                             <div class="q-summary">
-
-                                <span class="q-name">
-                                    {{ question.question_text|truncatechars:60 }}
-                                </span>
-
+                                <span class="q-name">{{ question.question_text|truncatechars:60 }}</span>
                                 <span class="q-meta">
                                     {{ question.get_question_type_display }}
                                     &middot;
                                     {{ question.marks }} mark{{ question.marks|pluralize }}
                                 </span>
-
                             </div>
 
                             <div class="q-badges">
-
-                                <span class="badge badge-category">
-                                    {{ question.category.name }}
-                                </span>
-
-                                <span class="badge badge-{{ question.difficulty }}">
-                                    {{ question.get_difficulty_display }}
-                                </span>
-
+                                <span class="badge badge-category">{{ question.category.name }}</span>
+                                <span class="badge badge-{{ question.difficulty }}">{{ question.get_difficulty_display }}</span>
                                 {% if question.is_active %}
                                 <span class="badge badge-active">Active</span>
                                 {% else %}
                                 <span class="badge badge-inactive">Inactive</span>
                                 {% endif %}
-
                             </div>
 
                         </div>
 
                         <div class="q-details">
 
-                            <p class="q-full-text">
-                                {{ question.question_text }}
-                            </p>
+                            <p class="q-full-text">{{ question.question_text }}</p>
 
                             {% if question.options.all %}
-
                             <div class="option-list">
-
                                 {% for option in question.options.all %}
-
                                 <div class="option-item {% if option.is_correct %}correct{% endif %}">
-
-                                    <span class="opt-dot">
-                                        {% if option.is_correct %}✓{% endif %}
-                                    </span>
-
+                                    <span class="opt-dot">{% if option.is_correct %}✓{% endif %}</span>
                                     {{ option.option_text }}
-
                                 </div>
-
                                 {% endfor %}
-
                             </div>
-
                             {% endif %}
 
                         </div>
@@ -280,14 +311,10 @@ Questions
 
                 {% else %}
 
-                {% if search %}
-                <p class="no-questions">
-                    No questions found for "<strong>{{ search }}</strong>".
-                </p>
+                {% if search or selected_category or selected_difficulty or selected_type or selected_status %}
+                <p class="no-questions">No questions match the current filters.</p>
                 {% else %}
-                <p class="no-questions">
-                    No questions on list.
-                </p>
+                <p class="no-questions">No questions on list.</p>
                 {% endif %}
 
                 {% endif %}
@@ -324,28 +351,14 @@ Questions
             <div class="field-group">
                 <label>Name</label>
                 {{ category_form.name }}
-
                 {% if category_form.name.errors %}
-                <div class="field-error">
-                    {{ category_form.name.errors }}
-                </div>
+                <div class="field-error">{{ category_form.name.errors }}</div>
                 {% endif %}
             </div>
 
             <div class="modal-actions">
-
-                <button type="button" id="close-category-modal" class="btn">
-
-                    Cancel
-
-                </button>
-
-                <button type="submit" name="create_category" class="btn btn-primary">
-
-                    Create
-
-                </button>
-
+                <button type="button" id="close-category-modal" class="btn">Cancel</button>
+                <button type="submit" name="create_category" class="btn btn-primary">Create</button>
             </div>
 
         </form>

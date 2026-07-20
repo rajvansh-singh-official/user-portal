@@ -190,15 +190,34 @@ def interviews(request):
     
 # ===== QUESTIONS =====
 
+# display label maps for filter chips
+_DIFFICULTY_LABELS = {
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+}
+
+_TYPE_LABELS = {
+    "mcq": "MCQ",
+    "true_false": "True / False",
+    "short_answer": "Short Answer",
+    "long_answer": "Long Answer",
+}
+
+_STATUS_LABELS = {
+    "active": "Active",
+    "inactive": "Inactive",
+}
+
 def questions(request):
     
     question_list = Question.objects.order_by("-created_at")
     
-    search = request.GET.get("search", "").strip()
-    category = request.GET.get("category", "")
-    difficulty = request.GET.get("difficulty", "")
+    search       = request.GET.get("search", "").strip()
+    category     = request.GET.get("category", "")
+    difficulty   = request.GET.get("difficulty", "")
     question_type = request.GET.get("type", "")
-    status = request.GET.get("status", "")
+    status       = request.GET.get("status", "")
 
     if search:
         question_list = question_list.filter(
@@ -219,7 +238,21 @@ def questions(request):
         question_list = question_list.filter(
             question_type=question_type
         )
-    
+
+    # fixed: status filter was captured but never applied
+    if status:
+        question_list = question_list.filter(
+            is_active=(status == "active")
+        )
+
+    # resolve category name for the active filter chip
+    selected_category_name = ""
+    if category:
+        try:
+            selected_category_name = Category.objects.get(pk=category).name
+        except Category.DoesNotExist:
+            category = ""
+
     if request.method == "POST":
 
         if "create_category" in request.POST:
@@ -309,11 +342,20 @@ def questions(request):
             "question_form": question_form,
             "category_form": category_form,
             "questions": question_list,
+
+            # raw filter values (for preserving dropdown selected state)
             "search": search,
             "selected_category": category,
             "selected_difficulty": difficulty,
             "selected_type": question_type,
             "selected_status": status,
+
+            # human-readable labels (for filter chips)
+            "selected_category_name": selected_category_name,
+            "selected_difficulty_label": _DIFFICULTY_LABELS.get(difficulty, ""),
+            "selected_type_label": _TYPE_LABELS.get(question_type, ""),
+            "selected_status_label": _STATUS_LABELS.get(status, ""),
+
             "categories": Category.objects.filter(is_active=True).order_by("name"),
         }
     )
