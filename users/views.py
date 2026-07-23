@@ -19,6 +19,7 @@ from .models import (
     Question,
     Option,
     Category,
+    Document,
 )
 
 # ===== AUTHENTICATION =====
@@ -67,12 +68,22 @@ def logout_view(request):
 def dashboard(request):
 
     users_count = User.objects.count()
+    interviews_count = Interview.objects.count() 
+    questions_count = Question.objects.count()
+    documents_count = Document.objects.count()
+    recent_interviews = Interview.objects\
+                            .select_related("user")\
+                            .order_by("-scheduled_at")[:3]
 
     return render(
         request,
         "dashboard/dashboard.html",
         {
             "users_count": users_count,
+            "interviews_count": interviews_count,  
+            "questions_count": questions_count,    
+            "documents_count": documents_count,    
+            "recent_interviews": recent_interviews,
         },
     )
 

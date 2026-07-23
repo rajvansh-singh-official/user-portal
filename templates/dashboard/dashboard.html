@@ -1,13 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}
-Dashboard
-{% endblock %}
-
-{% block page_title %}
-Dashboard
-{% endblock %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/base.css' %}">
@@ -18,18 +13,117 @@ Dashboard
 
 <div class="page-wrap">
 
-    <h1>Welcome, {{ user.username }}!</h1>
-    <p class="page-sub">Here's what's happening across your account.</p>
+    <h1>Welcome back, {{ user.username }}!</h1>
+    <p class="page-sub">Here's what's happening across your HRMS today.</p>
 
-    <div class="stat-card">
-        <span class="stat-label">Total Users</span>
-        <span class="stat-value">{{ users_count }}</span>
+    <!-- STAT GRID -->
+    <div class="stat-grid">
+
+        <div class="dash-stat">
+            <span class="dash-stat-label">Total Users</span>
+            <span class="dash-stat-value">{{ users_count }}</span>
+            <span class="dash-stat-sub">registered</span>
+        </div>
+
+        <div class="dash-stat">
+            <span class="dash-stat-label">Interviews</span>
+            <span class="dash-stat-value">{{ interviews_count }}</span>
+            <span class="dash-stat-sub">on record</span>
+        </div>
+
+        <div class="dash-stat">
+            <span class="dash-stat-label">Questions</span>
+            <span class="dash-stat-value">{{ questions_count }}</span>
+            <span class="dash-stat-sub">in bank</span>
+        </div>
+
+        <div class="dash-stat">
+            <span class="dash-stat-label">Documents</span>
+            <span class="dash-stat-value">{{ documents_count }}</span>
+            <span class="dash-stat-sub">uploaded</span>
+        </div>
+
     </div>
 
-    <div class="dashboard-actions">
-        <a href="{% url 'users' %}" class="btn btn-primary">
-            Manage Users
-        </a>
+    <!-- BOTTOM GRID -->
+    <div class="bottom-grid">
+
+        <!-- QUICK ACTIONS -->
+        <section class="card">
+
+            <div class="card-accent"></div>
+
+            <div class="card-header">
+                <h2>Quick Actions</h2>
+                <p>Jump to a module</p>
+            </div>
+
+            <div class="card-body">
+                <a href="{% url 'users' %}" class="btn btn-secondary action-btn">
+                    Manage Users <span class="action-arrow">→</span>
+                </a>
+                <a href="{% url 'interviews' %}" class="btn btn-secondary action-btn">
+                    Schedule Interview <span class="action-arrow">→</span>
+                </a>
+                <a href="{% url 'questions' %}" class="btn btn-secondary action-btn">
+                    Add Question <span class="action-arrow">→</span>
+                </a>
+            </div>
+
+        </section>
+
+        <!-- RECENT INTERVIEWS -->
+        <section class="card">
+
+            <div class="card-accent"></div>
+
+            <div class="card-header">
+                <h2>Recent Interviews</h2>
+                <p>Last 3 scheduled</p>
+            </div>
+
+            <div class="card-body">
+
+                {% if recent_interviews %}
+
+                <div class="iv-list">
+                    {% for interview in recent_interviews %}
+                    <div class="iv-item">
+
+                        <div class="iv-info">
+                            <span class="iv-name">{{ interview.user.username }}</span>
+                            <span class="iv-meta">
+                                {{ interview.get_interview_round_display }}
+                                &middot;
+                                {{ interview.get_mode_display }}
+                                &middot;
+                                {{ interview.interviewer }}
+                            </span>
+                        </div>
+
+                        <div class="iv-right">
+                            <span class="badge badge-{{ interview.status }}">
+                                {{ interview.get_status_display }}
+                            </span>
+                            <span class="iv-date">
+                                {{ interview.scheduled_at|date:"d M, H:i" }}
+                            </span>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% else %}
+
+                <p class="no-interviews">No interviews scheduled yet.</p>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
     </div>
 
 </div>
@@ -40,7 +134,7 @@ Dashboard
 
 <div class="page-wrap">
 
-    <h1>Welcome, Guest!</h1>
+    <h1>Welcome!</h1>
 
     <p class="page-sub">
         Log in to your account or create a new one to get started.
