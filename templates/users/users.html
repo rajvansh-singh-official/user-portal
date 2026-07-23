@@ -18,8 +18,8 @@ Users
 
 <div class="page-wrap">
 
-    <h1>Welcome, {{ user.username }}!</h1>
-    <p class="page-sub">Here's what's happening across your account.</p>
+    <h1>Users</h1>
+    <p class="page-sub">Manage registered users and view their profiles.</p>
 
     <div class="stat-card">
         <span class="stat-label">Total Users</span>
@@ -28,7 +28,7 @@ Users
 
     <form method="GET" class="search-wrap">
         <input type="text" name="search" class="search-input" placeholder="Search users..." value="{{ search }}">
-        <button type="submit" class="btn btn-primary search-btn">Search</button>
+        <button type="submit" class="btn btn-primary">Search</button>
         <a href="{% url 'users' %}" class="btn btn-secondary">Clear</a>
     </form>
 
@@ -36,22 +36,46 @@ Users
     <table class="user-table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Username</th>
+                <th>User</th>
                 <th>Email</th>
-                <th>Documents</th>
+                <th>Docs</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for user in users %}
             <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.documents.count }} document{{ user.documents.count|pluralize }}</td>
                 <td>
-                    <a href="{% url 'view_user' user.id %}" class="btn btn-primary btn-sm view-btn">View</a>
+                    <div class="user-cell">
+                        <div class="user-avatar">
+                            {{ user.username|first|upper }}
+                        </div>
+
+                        <div class="user-info">
+                            <div class="user-name">
+                                {{ user.username }}
+                            </div>
+
+                            <div class="user-id">
+                                #{{ user.id }}
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% if user.documents.count %}
+                    <span class="badge badge-doc">
+                        {{ user.documents.count }} Doc{{ user.documents.count|pluralize }}
+                    </span>
+                    {% else %}
+                    <span class="badge badge-empty">
+                        0 Docs
+                    </span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'view_user' user.id %}" class="btn btn-primary btn-sm view-btn">View →</a>
                 </td>
             </tr>
             {% endfor %}

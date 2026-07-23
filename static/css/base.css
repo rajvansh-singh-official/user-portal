@@ -152,8 +152,6 @@ body {
     padding: 48px 24px;
 }
 
-/* Modifier for pages that need more horizontal room (e.g. Dashboard's
-   4-card stat grid). Add alongside .page-wrap: class="page-wrap page-wrap--wide" */
 .page-wrap--wide {
     max-width: 1100px;
     padding: 28px 32px;
@@ -181,7 +179,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 20px;
+    padding: 10px 18px;
     border: 1px solid transparent;
     border-radius: 8px;
     background: transparent;
@@ -293,12 +291,7 @@ body {
     padding: 20px;
 }
 
-/* ===== STAT CARDS =====
-   display: inline-flex is the key line - it shrink-wraps to content when
-   used standalone (e.g. Users page, one card), but once this sits as a
-   child of .stat-grid below, grid items get auto-stretched to fill their
-   column, so it fills the row nicely there too. No extra width rules
-   needed for either case. */
+/* ===== STAT CARDS ===== */
 
 .stat-card {
     display: inline-flex;
@@ -331,10 +324,7 @@ body {
     color: var(--text-muted);
 }
 
-/* ===== STAT GRID =====
-   Reusable row layout for multiple .stat-card elements. Only Dashboard
-   uses it today, but it's generic enough for any page that needs several
-   stat cards side by side later (Interviews, Questions, etc). */
+/* ===== STAT GRID ===== */
 
 .stat-grid {
     display: grid;

@@ -1,7 +1,4 @@
-/* ===== STAT CARD =====
-   Card's own look (border, colors, font) lives in base.css since it's
-   shared with Dashboard. This page just needs its own bottom spacing
-   before the search bar. */
+/* ===== STAT CARD ===== */
 
 .stat-card {
     margin-bottom: 24px;
@@ -30,41 +27,6 @@
 
 .search-input:focus {
     border-color: var(--accent);
-}
-
-.search-btn,
-.clear-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background .15s, border-color .15s, color .15s;
-}
-
-.search-btn {
-    border: none;
-    background: var(--accent);
-    color: #fff;
-    cursor: pointer;
-}
-
-.search-btn:hover {
-    background: var(--accent-hover);
-}
-
-.clear-btn {
-    border: 1px solid var(--line);
-    background: transparent;
-    color: var(--text);
-}
-
-.clear-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
 }
 
 .no-results {
@@ -107,12 +69,69 @@
 }
 
 .user-table tbody tr:hover {
-    background: rgba(255,255,255,.02);
+    background: rgba(255, 255, 255, .02);
 }
 
 /* ===== BUTTON MODIFIERS ===== */
 
-.view-btn,
-.upload-btn {
+.view-btn {
     border-radius: 6px;
+}
+
+/* ===== USER CELL ===== */
+
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.user-id {
+    margin-top: 2px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* ===== BADGE ===== */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(99, 102, 241, .12);
+    color: #818CF8;
+}
+
+.badge-empty {
+    background: rgba(148,163,184,.12);
+    color: var(--text-muted);
 }
