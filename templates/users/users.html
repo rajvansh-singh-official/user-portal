@@ -21,7 +21,7 @@ Users
     <h1>Welcome, {{ user.username }}!</h1>
     <p class="page-sub">Here's what's happening across your account.</p>
 
-    <div class="stat-card" onclick="toggleTable()">
+    <div class="stat-card">
         <span class="stat-label">Total Users</span>
         <span class="stat-value">{{ users_count }}</span>
     </div>
@@ -33,32 +33,30 @@ Users
     </form>
 
     {% if users %}
-    <div id="usersTable" {% if search %}style="display:block;" {% else %}style="display:none;" {% endif %}>
-        <table class="user-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Documents</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.documents.count }} document{{ user.documents.count|pluralize }}</td>
-                    <td>
-                        <a href="{% url 'view_user' user.id %}" class="btn btn-primary btn-sm view-btn">View</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Documents</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.documents.count }} document{{ user.documents.count|pluralize }}</td>
+                <td>
+                    <a href="{% url 'view_user' user.id %}" class="btn btn-primary btn-sm view-btn">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     {% elif search %}
     <p class="no-results">
         No users found for "<strong>{{ search }}</strong>".
@@ -67,8 +65,4 @@ Users
 
 </div>
 
-{% endblock %}
-
-{% block js %}
-<script src="{% static 'js/users.js' %}"></script>
 {% endblock %}

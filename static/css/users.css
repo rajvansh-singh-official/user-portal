@@ -1,11 +1,10 @@
-/* ===== STAT CARD ===== */
+/* ===== STAT CARD =====
+   Card's own look (border, colors, font) lives in base.css since it's
+   shared with Dashboard. This page just needs its own bottom spacing
+   before the search bar. */
 
 .stat-card {
-    cursor: pointer;
-}
-
-.stat-card:hover {
-    transform: translateY(-2px);
+    margin-bottom: 24px;
 }
 
 /* ===== SEARCH ===== */

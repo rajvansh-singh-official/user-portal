@@ -152,6 +152,13 @@ body {
     padding: 48px 24px;
 }
 
+/* Modifier for pages that need more horizontal room (e.g. Dashboard's
+   4-card stat grid). Add alongside .page-wrap: class="page-wrap page-wrap--wide" */
+.page-wrap--wide {
+    max-width: 1100px;
+    padding: 28px 32px;
+}
+
 .page-wrap h1 {
     margin-bottom: 6px;
     font-size: 28px;
@@ -286,31 +293,66 @@ body {
     padding: 20px;
 }
 
-/* ===== STAT CARDS ===== */
+/* ===== STAT CARDS =====
+   display: inline-flex is the key line - it shrink-wraps to content when
+   used standalone (e.g. Users page, one card), but once this sits as a
+   child of .stat-grid below, grid items get auto-stretched to fill their
+   column, so it fills the row nicely there too. No extra width rules
+   needed for either case. */
 
 .stat-card {
     display: inline-flex;
     flex-direction: column;
     gap: 4px;
-    margin-bottom: 24px;
-    padding: 16px 24px;
+    padding: 16px 20px;
     border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
     border-radius: 12px;
     background: var(--surface-soft);
-    transition: transform .15s;
 }
 
 .stat-label {
-    color: var(--text-muted);
-    font-size: 11.5px;
+    font-size: 11px;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: .05em;
+    letter-spacing: .06em;
+    color: var(--text-muted);
 }
 
 .stat-value {
-    color: var(--accent);
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 700;
+    line-height: 1;
+    color: var(--accent);
+}
+
+.stat-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* ===== STAT GRID =====
+   Reusable row layout for multiple .stat-card elements. Only Dashboard
+   uses it today, but it's generic enough for any page that needs several
+   stat cards side by side later (Interviews, Questions, etc). */
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 900px) {
+
+    .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .page-wrap--wide {
+        padding: 20px;
+    }
+
 }
 
 /* ===== INTERVIEWS ===== */

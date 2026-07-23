@@ -11,7 +11,7 @@
 
 {% block content %}
 
-<div class="page-wrap">
+<div class="page-wrap page-wrap--wide">
 
     <h1>Welcome back, {{ user.username }}!</h1>
     <p class="page-sub">Here's what's happening across your HRMS today.</p>
@@ -19,28 +19,28 @@
     <!-- STAT GRID -->
     <div class="stat-grid">
 
-        <div class="dash-stat">
-            <span class="dash-stat-label">Total Users</span>
-            <span class="dash-stat-value">{{ users_count }}</span>
-            <span class="dash-stat-sub">registered</span>
+        <div class="stat-card">
+            <span class="stat-label">Total Users</span>
+            <span class="stat-value">{{ users_count }}</span>
+            <span class="stat-sub">registered</span>
         </div>
 
-        <div class="dash-stat">
-            <span class="dash-stat-label">Interviews</span>
-            <span class="dash-stat-value">{{ interviews_count }}</span>
-            <span class="dash-stat-sub">on record</span>
+        <div class="stat-card">
+            <span class="stat-label">Interviews</span>
+            <span class="stat-value">{{ interviews_count }}</span>
+            <span class="stat-sub">on record</span>
         </div>
 
-        <div class="dash-stat">
-            <span class="dash-stat-label">Questions</span>
-            <span class="dash-stat-value">{{ questions_count }}</span>
-            <span class="dash-stat-sub">in bank</span>
+        <div class="stat-card">
+            <span class="stat-label">Questions</span>
+            <span class="stat-value">{{ questions_count }}</span>
+            <span class="stat-sub">in bank</span>
         </div>
 
-        <div class="dash-stat">
-            <span class="dash-stat-label">Documents</span>
-            <span class="dash-stat-value">{{ documents_count }}</span>
-            <span class="dash-stat-sub">uploaded</span>
+        <div class="stat-card">
+            <span class="stat-label">Documents</span>
+            <span class="stat-value">{{ documents_count }}</span>
+            <span class="stat-sub">uploaded</span>
         </div>
 
     </div>
